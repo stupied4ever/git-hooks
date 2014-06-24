@@ -1,0 +1,15 @@
+Documentation:
+  Enabled: false
+
+AllCops:
+  # Include gemspec and Rakefile
+  Include:
+    - '**/*.gemspec'
+    - '**/Rakefile'
+  Exclude:
+    - 'vendor/**/*'
+    - 'db/**/*'
+    - 'bin/rails'
+    - 'bin/spring'
+    - 'bin/rake'
+    - 'config/unicorn.rb'
