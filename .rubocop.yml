@@ -13,3 +13,5 @@ AllCops:
     - 'bin/spring'
     - 'bin/rake'
     - 'config/unicorn.rb'
+
+inherit_from: .rubocop_todo.yml
