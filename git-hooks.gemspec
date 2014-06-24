@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ['eusou@rafaelalmeida.net']
   spec.summary       = %q(Help to keep git hooks organized.)
   spec.description   = %q(It stores git hooks and force git hooks installation.)
-  spec.homepage      = ''
+  spec.homepage      = 'http://github.com/stupied4ever/ruby-git-hooks'
   spec.license       = 'DWTF'
 
   spec.files         = `git ls-files -z`.split("\x0")
