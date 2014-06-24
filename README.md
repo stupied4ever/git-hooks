@@ -1,12 +1,12 @@
-# Ruby::Git::Hooks
+# GitHooks
 
-TODO: Write a gem description
+Some usefull ruby git hooks.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'ruby-git-hooks'
+    gem 'git-hooks'
 
 And then execute:
 
@@ -14,15 +14,49 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install ruby-git-hooks
+    $ gem install git-hooks
 
 ## Usage
 
-TODO: Write usage instructions here
+By now you will find only some simple hooks to:
+
+ - Prevent commit on master.
+ - Prevent commit with rubocop offences.
+ - prevent commit with broken rspec tests.
+
+In the future, some validations will be
+added, such as:
+
+ - ensure hooks exists on ```.git/hooks```
+
+By now, if you want all this validations, you should include a
+```.git/hooks/pre-commit``` with:
+
+```
+#!/usr/bin/env ruby
+require 'git-hooks'
+
+GitHooks::PreCommit.validate
+```
+
+If you want specific validation include:
+```
+GitHooks::PreCommit::PreventMaster.new.validate
+```
+
+```
+GitHooks::PreCommit::Rspec.new.validate
+```
+
+or
+
+```
+GitHooks::PreCommit::Rubocop.new.validate
+```
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/ruby-git-hooks/fork )
+1. Fork it ( https://github.com/stupied4ever/ruby-git-hooks/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
