@@ -18,7 +18,11 @@ module GitHooks
 
       def run_rubocop
         files = changed_ruby_files
-        system("rubocop #{files.join(' ')} --force-exclusion") if files.any?
+        if files.any?
+          system("rubocop #{files.join(' ')} --force-exclusion")
+        else
+          true
+        end
       end
     end
   end
