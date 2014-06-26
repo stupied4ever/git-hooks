@@ -1,10 +1,26 @@
 module GitHooks
   module PreCommit
     class PreventMaster
-      def validate
-        return unless `git rev-parse --abbrev-ref HEAD`.strip == 'master'
+      attr_reader :git_repository
 
-        abort 'Prevented to commit on master'
+      def self.validate
+        new(GitHooks.git_repository).validate
+      end
+
+      def initialize(git_repository)
+        @git_repository = git_repository
+      end
+
+      def validate
+        abort 'Prevented to commit on master' if on_master?
+      end
+
+      private
+
+      BRANCH_MASTER = 'master'
+
+      def on_master?
+        git_repository.current_branch == BRANCH_MASTER
       end
     end
   end
