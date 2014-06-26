@@ -38,7 +38,7 @@ require 'git-hooks'
 
 GitHooks::PreCommit::PreventMaster.new.validate
 GitHooks::PreCommit::Rspec.new.validate
-GitHooks::PreCommit::Rubocop.new.validate
+GitHooks::PreCommit::Rubocop.validate
 ```
 
 ## Contributing
