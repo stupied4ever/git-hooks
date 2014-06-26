@@ -37,7 +37,7 @@ By now, if you want all this validations, you should include a
 require 'git-hooks'
 
 GitHooks::PreCommit::PreventMaster.validate
-GitHooks::PreCommit::Rspec.new.validate
+GitHooks::PreCommit::Rspec.validate
 GitHooks::PreCommit::Rubocop.validate
 ```
 
