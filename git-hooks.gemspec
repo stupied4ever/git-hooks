@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = GitHooks::VERSION
   spec.authors       = ['Rafael da Silva Almeida']
   spec.email         = ['eusou@rafaelalmeida.net']
-  spec.summary       = %q(Help to keep git hooks organized.)
-  spec.description   = %q(It stores git hooks and force git hooks installation.)
+  spec.summary       = 'Help to keep git hooks organized.'
+  spec.description   = 'It stores git hooks and force git hooks installation.'
   spec.homepage      = 'http://github.com/stupied4ever/ruby-git-hooks'
   spec.license       = 'DWTF'
 
