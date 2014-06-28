@@ -1,10 +1,20 @@
 module GitHooks
   module PreCommit
     class Rspec
-      def validate
-        return if system('bundle exec rspec --format=progress')
+      attr_reader :git_repository, :rspec_executor
 
-        abort 'Prevented broken commit'
+      def self.validate
+        new(GitHooks.git_repository, RspecExecutor.new).validate
+      end
+
+      def initialize(git_repository, rspec_executor)
+        @git_repository, @rspec_executor = git_repository, rspec_executor
+      end
+
+      def validate
+        return if git_repository.clean?
+
+        abort 'Prevented broken commit' if rspec_executor.errors?
       end
     end
   end

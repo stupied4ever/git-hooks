@@ -1,28 +1,30 @@
 module GitHooks
   module PreCommit
     class Rubocop
+      attr_reader :git_repository, :rubocop_validator
+
+      def self.validate
+        new(GitHooks.git_repository, RubocopValidator.new).validate
+      end
+
+      def initialize(git_repository, rubocop_validator)
+        @git_repository, @rubocop_validator = git_repository, rubocop_validator
+      end
+
       def validate
-        abort 'Check rubocop offences' unless run_rubocop
+        abort 'Check rubocop offences' if offences?
       end
 
       private
 
-      ADDED_OR_MODIFIED = /A|AM|^M/.freeze
-
-      def changed_ruby_files
-        `git status --porcelain`.split(/\n/)
-          .select { |file| file =~ ADDED_OR_MODIFIED }
-          .map    { |file| file.split(' ')[1]        }
+      def changed_files
+        git_repository
+          .added_or_modified
           .select { |file| File.extname(file) == '.rb' }
       end
 
-      def run_rubocop
-        files = changed_ruby_files
-        if files.any?
-          system("rubocop #{files.join(' ')} --force-exclusion")
-        else
-          true
-        end
+      def offences?
+        rubocop_validator.errors?(changed_files)
       end
     end
   end

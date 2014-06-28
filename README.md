@@ -36,22 +36,9 @@ By now, if you want all this validations, you should include a
 #!/usr/bin/env ruby
 require 'git-hooks'
 
-GitHooks::PreCommit.validate
-```
-
-If you want specific validation include:
-```
-GitHooks::PreCommit::PreventMaster.new.validate
-```
-
-```
-GitHooks::PreCommit::Rspec.new.validate
-```
-
-or
-
-```
-GitHooks::PreCommit::Rubocop.new.validate
+GitHooks::PreCommit::PreventMaster.validate
+GitHooks::PreCommit::Rspec.validate
+GitHooks::PreCommit::Rubocop.validate
 ```
 
 ## Contributing
