@@ -12,9 +12,19 @@ describe GitHooks do
   end
 
   describe '.configurations' do
-    subject { described_class.configurations }
+    subject(:configurations) { described_class.configurations }
 
-    it { is_expected.to eq(GitHooks::Configurations.default) }
+    before do
+      allow(GitHooks::Configurations).to receive(:new).and_return(configs)
+    end
+
+    let(:configs) { instance_double(GitHooks::Configurations) }
+
+    it 'creates with default params' do
+      expect(GitHooks::Configurations).to receive(:new).with(no_args)
+
+      is_expected.to eq(configs)
+    end
   end
 
   describe '.hook_installed?' do
@@ -44,23 +54,5 @@ describe GitHooks do
 
       it { is_expected.to be_falsy }
     end
-  end
-
-  describe '.git_repository' do
-    subject(:git) { described_class.git_repository }
-
-    before { allow(GitHooks::Git).to receive(:new).and_return(git_repository) }
-
-    let(:git_repository) { instance_double(GitHooks::Git) }
-
-    it 'initialize git with `configuration#git_repository`' do
-      expect(GitHooks::Git)
-        .to receive(:new)
-        .with(GitHooks.configurations.git_folder)
-
-      git
-    end
-
-    it('returns git_repository') { is_expected.to eq(git_repository) }
   end
 end

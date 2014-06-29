@@ -1,4 +1,6 @@
+require 'equalizer'
 require 'yaml'
+
 require 'git'
 
 require_relative 'git_hooks/configurations'
@@ -13,11 +15,7 @@ module GitHooks
   HOOK_SAMPLE_FILE = 'hook.sample'
 
   def self.configurations
-    @configurations ||= Configurations.default
-  end
-
-  def self.git_repository
-    Git.new(configurations.git_folder)
+    @configurations ||= Configurations.new
   end
 
   def self.base_path
