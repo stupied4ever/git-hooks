@@ -10,6 +10,19 @@ module GitHooks
     let(:file) { instance_double(ConfigFile) }
     let(:repository) { instance_double(Git) }
 
+    describe '#pre_commits' do
+      subject { configurations.pre_commits }
+
+      let(:configurations) { described_class.new(config_file: config_file) }
+      let(:pre_commits) { %w(foo, bar) }
+
+      let(:config_file) do
+        instance_double(ConfigFile, pre_commits: pre_commits)
+      end
+
+      it { is_expected.to eq(pre_commits) }
+    end
+
     describe '#config_file' do
       subject(:config_file) { configurations.config_file }
 

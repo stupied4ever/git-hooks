@@ -9,10 +9,12 @@ require_relative 'git_hooks/config_file'
 require_relative 'git_hooks/rspec_executor'
 require_relative 'git_hooks/rubocop_validator'
 
+require_relative 'git_hooks/exceptions'
 require_relative 'git_hooks/pre_commit'
 
 module GitHooks
   HOOK_SAMPLE_FILE = 'hook.sample'
+  HOOKS = [PRE_COMMIT = 'pre-commit']
 
   class << self
     attr_writer :configurations
@@ -31,6 +33,14 @@ module GitHooks
 
       return false unless File.symlink?(absolute_path)
       File.realpath(absolute_path) == real_hook_path
+    end
+
+    def validate_hooks!
+      fail Exceptions::MissingHook, PRE_COMMIT if valid_pre_commit_hook?
+    end
+
+    def valid_pre_commit_hook?
+      configurations.pre_commits.any? && !hook_installed?(PRE_COMMIT)
     end
   end
 end

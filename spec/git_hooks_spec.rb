@@ -1,4 +1,39 @@
 describe GitHooks do
+  describe '#validate_hooks!' do
+    subject { -> { described_class.validate_hooks! } }
+
+    before { GitHooks.configurations = configs }
+
+    let(:configs) do
+      instance_double(GitHooks::Configurations, pre_commits: pre_commits)
+    end
+
+    let(:pre_commits) { [] }
+
+    it { is_expected.to_not raise_error }
+
+    context 'with pre-commit hooks configured' do
+      let(:pre_commits) { %w(foo bar) }
+      let(:hook_installed?) { true }
+
+      before do
+        allow(GitHooks).to receive(:hook_installed?).and_return(hook_installed?)
+      end
+
+      it { is_expected.to_not raise_error }
+
+      context 'but without pre-commit installed' do
+        let(:hook_installed?) { false }
+
+        let(:message) { 'Please install pre-commit hook.' }
+
+        it do
+          is_expected.to raise_error(GitHooks::Exceptions::MissingHook, message)
+        end
+      end
+    end
+  end
+
   describe '.base_path' do
     subject { described_class.base_path }
 
@@ -15,6 +50,7 @@ describe GitHooks do
     subject(:configurations) { described_class.configurations }
 
     before do
+      GitHooks.configurations = nil
       allow(GitHooks::Configurations).to receive(:new).and_return(configs)
     end
 
