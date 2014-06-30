@@ -14,19 +14,23 @@ require_relative 'git_hooks/pre_commit'
 module GitHooks
   HOOK_SAMPLE_FILE = 'hook.sample'
 
-  def self.configurations
-    @configurations ||= Configurations.new
-  end
+  class << self
+    attr_writer :configurations
 
-  def self.base_path
-    File.absolute_path(File.join(File.expand_path(__FILE__), '..', '..'))
-  end
+    def configurations
+      @configurations ||= Configurations.new
+    end
 
-  def self.hook_installed?(hook)
-    absolute_path = File.join(base_path, '.git', 'hooks', hook)
-    real_hook_path = File.join(base_path, HOOK_SAMPLE_FILE)
+    def base_path
+      File.absolute_path(File.join(File.expand_path(__FILE__), '..', '..'))
+    end
 
-    return false unless File.symlink?(absolute_path)
-    File.realpath(absolute_path) == real_hook_path
+    def hook_installed?(hook)
+      absolute_path = File.join(base_path, '.git', 'hooks', hook)
+      real_hook_path = File.join(base_path, HOOK_SAMPLE_FILE)
+
+      return false unless File.symlink?(absolute_path)
+      File.realpath(absolute_path) == real_hook_path
+    end
   end
 end

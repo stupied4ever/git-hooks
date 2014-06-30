@@ -27,6 +27,24 @@ describe GitHooks do
     end
   end
 
+  describe 'configurations=' do
+    subject(:set_configurations) { described_class.configurations = configs }
+
+    let(:configs) { instance_double(GitHooks::Configurations) }
+
+    before do
+      allow(GitHooks::Configurations).to receive(:new).and_return(nil)
+    end
+
+    it 'updates configurations' do
+      expect { set_configurations }.to change {
+        GitHooks.configurations
+      }.to(configs)
+
+      is_expected.to eq(configs)
+    end
+  end
+
   describe '.hook_installed?' do
     subject { described_class.hook_installed?(hook) }
 
