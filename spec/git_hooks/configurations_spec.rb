@@ -26,7 +26,7 @@ module GitHooks
     describe '#config_file' do
       subject(:config_file) { configurations.config_file }
 
-      let(:config_path) { 'git_hooks.yml' }
+      let(:config_path) { '.git_hooks.yml' }
 
       it { is_expected.to eq(file) }
 

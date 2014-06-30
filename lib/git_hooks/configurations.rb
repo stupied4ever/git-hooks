@@ -10,7 +10,7 @@ module GitHooks
     def_delegator :config_file, :pre_commits
 
     def initialize(
-      config_file: ConfigFile.new('git_hooks.yml'),
+      config_file: ConfigFile.new('.git_hooks.yml'),
       git_repository: Git.new('.')
     )
       @config_file = config_file
