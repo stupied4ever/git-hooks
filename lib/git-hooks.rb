@@ -35,12 +35,23 @@ module GitHooks
       File.realpath(absolute_path) == real_hook_path
     end
 
-    def validate_hooks!
-      fail Exceptions::MissingHook, PRE_COMMIT if valid_pre_commit_hook?
+    def install_hook(hook)
+      File.symlink(real_hook_template_path, ".git/hooks/#{hook}")
     end
 
+    def validate_hooks!
+      fail Exceptions::MissingHook, PRE_COMMIT unless valid_pre_commit_hook?
+    end
+
+    private
+
     def valid_pre_commit_hook?
-      configurations.pre_commits.any? && !hook_installed?(PRE_COMMIT)
+      return true if configurations.pre_commits.empty?
+      hook_installed?(PRE_COMMIT)
+    end
+
+    def real_hook_template_path
+      File.join(base_path, HOOK_SAMPLE_FILE)
     end
   end
 end

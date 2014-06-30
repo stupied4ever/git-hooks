@@ -81,16 +81,44 @@ describe GitHooks do
     end
   end
 
+  describe '.install_hook' do
+    subject(:install_hook) { described_class.install_hook(hook) }
+
+    let(:hook) { 'pre-commit' }
+    let(:hook_real_path) { File.join(GitHooks.base_path, 'hook.sample') }
+    let(:git_hook_path) { ".git/hooks/#{hook}" }
+
+    before do
+      allow(File).to receive(:symlink).and_return(true)
+    end
+
+    it 'creates symlink' do
+      expect(File)
+        .to receive(:symlink)
+        .with(hook_real_path, git_hook_path)
+      install_hook
+    end
+
+    it { is_expected.to be_truthy }
+  end
+
   describe '.hook_installed?' do
-    subject { described_class.hook_installed?(hook) }
+    subject(:installed?) { described_class.hook_installed?(hook) }
 
     let(:hook) { 'pre-commit' }
     let(:hook_real_path) { File.join(GitHooks.base_path, 'hook.sample') }
     let(:symlink?) { true }
 
+    let(:absolute_path) { File.join(GitHooks.base_path, '.git', 'hooks', hook) }
+
     before do
       allow(File).to receive(:symlink?).and_return(symlink?)
       allow(File).to receive(:realpath).and_return(hook_real_path)
+    end
+
+    it 'validates file is a symlink' do
+      expect(File).to receive(:symlink?).with(absolute_path)
+      installed?
     end
 
     it { is_expected.to be_truthy }
