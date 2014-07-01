@@ -19,6 +19,12 @@ module GitHooks
   class << self
     attr_writer :configurations
 
+    def execute_pre_commits
+      configurations.pre_commits.each do |pre_commit|
+        GitHooks::PreCommit.const_get(pre_commit).validate
+      end
+    end
+
     def configurations
       @configurations ||= Configurations.new
     end
