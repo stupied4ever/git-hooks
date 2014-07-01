@@ -50,14 +50,19 @@ module GitHooks
         subject(:validate) { described_class.validate }
 
         let(:rubocop) { instance_double(Rubocop) }
-        let(:git) { instance_double(Git) }
         let(:rubocop_validator) { instance_double(RubocopValidator) }
+
+        let(:git) { instance_double(GitHooks::Git) }
+
+        let(:configurations) do
+          instance_double(Configurations, git_repository: git)
+        end
 
         before do
           allow(described_class).to receive(:new).and_return(rubocop)
           allow(rubocop).to receive(:validate).and_return(nil)
 
-          allow(GitHooks).to receive(:git_repository).and_return(git)
+          allow(GitHooks).to receive(:configurations).and_return(configurations)
           allow(RubocopValidator).to receive(:new).and_return(rubocop_validator)
         end
 

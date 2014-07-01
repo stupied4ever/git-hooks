@@ -46,14 +46,18 @@ module GitHooks
         subject(:validate) { described_class.validate }
 
         let(:rspec) { instance_double(Rspec) }
-        let(:git) { instance_double(Git) }
         let(:rspec_executor) { instance_double(RspecExecutor) }
+        let(:git) { instance_double(GitHooks::Git) }
+
+        let(:configurations) do
+          instance_double(Configurations, git_repository: git)
+        end
 
         before do
           allow(described_class).to receive(:new).and_return(rspec)
           allow(rspec).to receive(:validate).and_return(nil)
 
-          allow(GitHooks).to receive(:git_repository).and_return(git)
+          allow(GitHooks).to receive(:configurations).and_return(configurations)
           allow(RspecExecutor).to receive(:new).and_return(rspec_executor)
         end
 

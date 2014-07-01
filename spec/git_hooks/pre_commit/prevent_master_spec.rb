@@ -28,10 +28,14 @@ module GitHooks
         subject(:validate) { described_class.validate }
 
         let(:prevent_master) { instance_double(PreventMaster) }
-        let(:git) { instance_double(Git) }
+        let(:git) { instance_double(GitHooks::Git) }
+
+        let(:configurations) do
+          instance_double(Configurations, git_repository: git)
+        end
 
         before do
-          allow(GitHooks).to receive(:git_repository).and_return(git)
+          allow(GitHooks).to receive(:configurations).and_return(configurations)
           allow(described_class).to receive(:new).and_return(prevent_master)
           allow(prevent_master).to receive(:validate).and_return(nil)
         end
