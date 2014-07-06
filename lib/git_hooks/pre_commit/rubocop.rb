@@ -1,7 +1,7 @@
 module GitHooks
   module PreCommit
     class Rubocop
-      attr_reader :git_repository, :rubocop_validator
+      attr_reader :git, :rubocop_validator
 
       def self.validate
         new(
@@ -9,8 +9,9 @@ module GitHooks
         ).validate
       end
 
-      def initialize(git_repository, rubocop_validator)
-        @git_repository, @rubocop_validator = git_repository, rubocop_validator
+      def initialize(git, rubocop_validator, use_stash = false)
+        @git, @rubocop_validator = git, rubocop_validator
+        @use_stash = use_stash
       end
 
       def validate
@@ -20,13 +21,20 @@ module GitHooks
       private
 
       def changed_files
-        git_repository
+        git
           .added_or_modified
           .select { |file| File.extname(file) == '.rb' }
       end
 
       def offences?
-        rubocop_validator.errors?(changed_files)
+        if @use_stash
+          git.repository.lib.stash_save('rubocop-stash')
+          rubocop_validator.errors?(changed_files).tap do
+            git.repository.lib.stash_apply
+          end
+        else
+          rubocop_validator.errors?(changed_files)
+        end
       end
     end
   end

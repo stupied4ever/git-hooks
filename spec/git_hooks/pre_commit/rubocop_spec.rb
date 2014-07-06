@@ -44,6 +44,40 @@ module GitHooks
 
           it { expect(-> { validate }).to_not raise_error }
         end
+
+        context 'with stash option' do
+          let(:rubocop) do
+            described_class.new(git_repository, rubocop_validator, true)
+          end
+
+          let(:repository) { instance_double(::Git::Base) }
+          let(:lib) { instance_double(::Git::Lib) }
+
+          before do
+            allow(repository).to receive(:lib).and_return(lib)
+            allow(git_repository).to receive(:repository).and_return(repository)
+            allow(lib).to receive(:stash_save).and_return(true)
+            allow(lib).to receive(:stash_apply).and_return(true)
+          end
+
+          it 'stashes working directory changes and reapplies them' do
+            expect(lib).to receive(:stash_save).with('rubocop-stash')
+            expect(lib).to receive(:stash_apply)
+
+            expect(-> { validate }).not_to raise_error
+          end
+
+          context 'with validation error' do
+            let(:errors?) { true }
+
+            it 'stashes working directory changes and reapplies them' do
+              expect(lib).to receive(:stash_save).with('rubocop-stash')
+              expect(lib).to receive(:stash_apply)
+
+              expect(-> { validate }).to raise_error
+            end
+          end
+        end
       end
 
       describe '.validate' do
