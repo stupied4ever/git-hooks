@@ -24,22 +24,22 @@ By now you will find only some simple hooks to:
  - Prevent commit with rubocop offences.
  - prevent commit with broken rspec tests.
 
-In the future, some validations will be
-added, such as:
-
+And some simple tasks will be executed such as:
  - ensure hooks exists on ```.git/hooks```
 
-By now, if you want all this validations, you should include a
-```.git/hooks/pre-commit``` with:
+To execute this hooks, you need to:
 
-```
-#!/usr/bin/env ruby
-require 'git-hooks'
+ - Install git_hooks on project.
+ ```git_hooks install pre-commit```
 
-GitHooks::PreCommit::PreventMaster.validate
-GitHooks::PreCommit::Rspec.validate
-GitHooks::PreCommit::Rubocop.validate
-```
+ - Create a ```.git_hooks.yml``` on project root.
+ ```
+ ---
+ pre_commits:
+ - GitHooks::PreCommit::PreventMaster
+ - GitHooks::PreCommit::Rspec
+ - GitHooks::PreCommit::Rubocop
+ ```
 
 ## Contributing
 
