@@ -19,6 +19,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'rubocop', '~> 0.23'
+  spec.add_dependency 'thor', '~> 0.19'
   spec.add_dependency 'git', '~> 1.2'
   spec.add_dependency 'equalizer', '~> 0.0.9'
 

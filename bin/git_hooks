@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/git_hooks/cli'
+
+GitHooks::CLI.start
