@@ -19,11 +19,18 @@ Or install it yourself as:
 ## Usage
 ### Install git_hooks on project.
 
-```$ git_hooks install pre-commit```
+```
+$ git_hooks install pre-commit
+```
 
 ### Create configuration file
 
-Create a ```.git_hooks.yml``` on project root, you can use ```git_hooks.yml.example``` as example.
+Create a ```.git_hooks.yml``` on project root.
+
+```bash
+$ git_hooks configure
+```
+
 
 By now you will find only some simple hooks to:
 
@@ -32,7 +39,11 @@ By now you will find only some simple hooks to:
  - prevent commit with broken rspec tests.
 
 ### Ensure hooks existence
-To ensure that hooks exists on ```.git/hooks```, include on your application start up (probably  ```config/environments/development.rb``` or ```config/environments/test.rb```)
+
+To ensure that hooks exists on ```.git/hooks```, include on your application
+start up (probably  ```config/environments/development.rb``` or
+```config/environments/test.rb```)
+
 ```ruby
 GitHooks.validate_hooks!
 ```
