@@ -4,7 +4,7 @@ module GitHooks
       attr_reader :git_repository
 
       def self.validate
-        new(GitHooks.git_repository).validate
+        new(GitHooks.configurations.git_repository).validate
       end
 
       def initialize(git_repository)

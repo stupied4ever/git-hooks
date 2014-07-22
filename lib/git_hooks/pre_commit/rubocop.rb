@@ -4,7 +4,9 @@ module GitHooks
       attr_reader :git_repository, :rubocop_validator
 
       def self.validate
-        new(GitHooks.git_repository, RubocopValidator.new).validate
+        new(
+          GitHooks.configurations.git_repository, RubocopValidator.new
+        ).validate
       end
 
       def initialize(git_repository, rubocop_validator)

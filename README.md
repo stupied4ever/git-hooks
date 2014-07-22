@@ -17,6 +17,20 @@ Or install it yourself as:
     $ gem install git-hooks
 
 ## Usage
+### Install git_hooks on project.
+
+```
+$ git_hooks install pre-commit
+```
+
+### Create configuration file
+
+Create a ```.git_hooks.yml``` on project root.
+
+```bash
+$ git_hooks configure
+```
+
 
 By now you will find only some simple hooks to:
 
@@ -24,22 +38,17 @@ By now you will find only some simple hooks to:
  - Prevent commit with rubocop offences.
  - prevent commit with broken rspec tests.
 
-In the future, some validations will be
-added, such as:
+### Ensure hooks existence
 
- - ensure hooks exists on ```.git/hooks```
+To ensure that hooks exists on ```.git/hooks```, include on your application
+start up (probably  ```config/environments/development.rb``` or
+```config/environments/test.rb```)
 
-By now, if you want all this validations, you should include a
-```.git/hooks/pre-commit``` with:
-
+```ruby
+GitHooks.validate_hooks!
 ```
-#!/usr/bin/env ruby
-require 'git-hooks'
 
-GitHooks::PreCommit::PreventMaster.validate
-GitHooks::PreCommit::Rspec.validate
-GitHooks::PreCommit::Rubocop.validate
-```
+This will force ```git_hooks``` installation before your application start.
 
 ## Contributing
 

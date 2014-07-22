@@ -4,7 +4,9 @@ module GitHooks
       attr_reader :git_repository, :rspec_executor
 
       def self.validate
-        new(GitHooks.git_repository, RspecExecutor.new).validate
+        new(
+          GitHooks.configurations.git_repository, RspecExecutor.new
+        ).validate
       end
 
       def initialize(git_repository, rspec_executor)
