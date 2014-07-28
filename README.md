@@ -28,7 +28,7 @@ $ git_hooks install pre-commit
 Create a `.git_hooks.yml` on project root.
 
 ```bash
-$ git_hooks configure
+$ git_hooks init
 ```
 
 By now you will find only some simple hooks to:

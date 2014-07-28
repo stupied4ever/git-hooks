@@ -14,13 +14,13 @@ module GitHooks
       GitHooks.install(hook)
     end
 
-    desc 'Create configuration file', 'Create a configuration file'
+    desc 'Init GitHooks on current folder', 'Create a configuration file'
     long_desc <<-LONGDESC
       Create a configuration file base on git_hooks.yml.examle
 
-      $ git_hooks configure
+      $ git_hooks init
     LONGDESC
-    def configure
+    def init
       example_file = File.expand_path(
         '../../../git_hooks.yml.example', __FILE__
       )
