@@ -37,8 +37,7 @@ module GitHooks
       hook_file = File.join(Dir.pwd, '.git', 'hooks', hook)
       real_hook_file = File.join(base_path, HOOK_SAMPLE_FILE)
 
-      return false unless File.symlink?(hook_file)
-      File.realpath(hook_file) == real_hook_file
+      File.symlink?(hook_file) && File.realpath(hook_file) == real_hook_file
     end
 
     def install_hook(hook)
