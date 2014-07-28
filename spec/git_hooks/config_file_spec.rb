@@ -9,16 +9,16 @@ module GitHooks
     describe '#pre_commits' do
       subject { config.pre_commits }
 
-      it { is_expected.to eq([]) }
+      let(:path) { fixture_path('git_hooks.yml') }
 
-      context 'when the given file exists' do
-        before do
-          allow(YAML).to receive(:load_file).and_return(content)
-        end
+      it 'has the pre commits specified on hook file' do
+        is_expected.to eq(%w(foo bar))
+      end
 
-        it 'has the pre commits specified on hook file' do
-          is_expected.to eq(%w(foo bar))
-        end
+      context 'when the given file does not exist' do
+        let(:path) { 'some-not-existent-file' }
+
+        it { is_expected.to eq([]) }
       end
     end
   end
