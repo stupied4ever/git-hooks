@@ -51,8 +51,7 @@ module GitHooks
     private
 
     def valid_pre_commit_hook?
-      return true if configurations.pre_commits.empty?
-      hook_installed?(PRE_COMMIT)
+      configurations.pre_commits.empty? || hook_installed?(PRE_COMMIT)
     end
 
     def real_hook_template_path
