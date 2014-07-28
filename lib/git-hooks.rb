@@ -30,7 +30,7 @@ module GitHooks
     end
 
     def base_path
-      File.absolute_path(File.join(File.expand_path(__FILE__), '..', '..'))
+      File.expand_path('../..', __FILE__)
     end
 
     def hook_installed?(hook)
