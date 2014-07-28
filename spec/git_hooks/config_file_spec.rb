@@ -6,7 +6,7 @@ module GitHooks
     let(:content) { { 'pre_commits' => pre_commits } }
     let(:pre_commits) { %w(foo bar) }
 
-    context 'when the given file does not exists' do
+    context 'when the given file does not exist' do
       subject(:config) { -> { described_class.new(path) } }
 
       let(:path) { 'some-not-existent-file' }
