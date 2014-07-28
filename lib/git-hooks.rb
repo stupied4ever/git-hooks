@@ -40,7 +40,7 @@ module GitHooks
       File.symlink?(hook_file) && File.realpath(hook_file) == real_hook_file
     end
 
-    def install_hook(hook)
+    def install(hook)
       File.symlink(real_hook_template_path, File.join('.git', 'hooks', hook))
     end
 

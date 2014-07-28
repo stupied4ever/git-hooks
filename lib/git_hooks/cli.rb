@@ -11,7 +11,7 @@ module GitHooks
       $ git_hooks install pre-commit
     LONGDESC
     def install(hook)
-      GitHooks.install_hook(hook)
+      GitHooks.install(hook)
     end
 
     desc 'Create configuration file', 'Create a configuration file'

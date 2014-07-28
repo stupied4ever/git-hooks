@@ -81,8 +81,8 @@ describe GitHooks do
     end
   end
 
-  describe '.install_hook' do
-    subject(:install_hook) { described_class.install_hook(hook) }
+  describe '.install' do
+    subject(:install) { described_class.install(hook) }
 
     let(:hook) { 'pre-commit' }
     let(:hook_real_path) { File.join(GitHooks.base_path, 'hook.sample') }
@@ -96,7 +96,7 @@ describe GitHooks do
       expect(File)
         .to receive(:symlink)
         .with(hook_real_path, git_hook_path)
-      install_hook
+      install
     end
 
     it { is_expected.to be_truthy }
