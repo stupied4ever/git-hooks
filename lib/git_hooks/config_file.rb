@@ -7,7 +7,7 @@ module GitHooks
     end
 
     def pre_commits
-      content['pre_commits'] || []
+      content.fetch('pre_commits') { [] }
     end
 
     def content
