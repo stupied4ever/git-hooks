@@ -8,7 +8,7 @@ module GitHooks
     long_desc <<-LONGDESC
       Install some hook:
 
-      > $ git_hooks install pre-commit
+      $ git_hooks install pre-commit
     LONGDESC
     def install(hook)
       GitHooks.install_hook(hook)
@@ -18,7 +18,7 @@ module GitHooks
     long_desc <<-LONGDESC
       Create a configuration file base on git_hooks.yml.examle
 
-      > $ git_hooks configure
+      $ git_hooks configure
     LONGDESC
     def configure
       example_file = File.expand_path(
