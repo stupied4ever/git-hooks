@@ -41,7 +41,7 @@ module GitHooks
     end
 
     def install_hook(hook)
-      File.symlink(real_hook_template_path, ".git/hooks/#{hook}")
+      File.symlink(real_hook_template_path, File.join('.git', 'hooks', hook))
     end
 
     def validate_hooks!
