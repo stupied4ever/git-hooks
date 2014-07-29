@@ -5,31 +5,28 @@ describe GitHooks do
     before { GitHooks.configurations = configs }
 
     let(:configs) do
-      instance_double(GitHooks::Configurations, pre_commits: pre_commits)
+      GitHooks::Configurations.new(config_file: config_file)
     end
 
-    let(:pre_commits) { [] }
+    let(:config_file) do
+      GitHooks::ConfigFile.new(fixture_path('git_hooks.yml'))
+    end
+
+    let(:hook_installed?) { true }
+
+    before do
+      allow(GitHooks).to receive(:hook_installed?).and_return(hook_installed?)
+    end
 
     it { is_expected.to_not raise_error }
 
-    context 'with pre-commit hooks configured' do
-      let(:pre_commits) { %w(foo bar) }
-      let(:hook_installed?) { true }
+    context 'but without pre-commit installed' do
+      let(:hook_installed?) { false }
 
-      before do
-        allow(GitHooks).to receive(:hook_installed?).and_return(hook_installed?)
-      end
+      let(:message) { 'Please install pre-commit hook.' }
 
-      it { is_expected.to_not raise_error }
-
-      context 'but without pre-commit installed' do
-        let(:hook_installed?) { false }
-
-        let(:message) { 'Please install pre-commit hook.' }
-
-        it do
-          is_expected.to raise_error(GitHooks::Exceptions::MissingHook, message)
-        end
+      it do
+        is_expected.to raise_error(GitHooks::Exceptions::MissingHook, message)
       end
     end
   end
@@ -76,13 +73,11 @@ describe GitHooks do
       expect { set_configurations }.to change {
         GitHooks.configurations
       }.to(configs)
-
-      is_expected.to eq(configs)
     end
   end
 
-  describe '.install_hook' do
-    subject(:install_hook) { described_class.install_hook(hook) }
+  describe '.install' do
+    subject(:install) { described_class.install(hook) }
 
     let(:hook) { 'pre-commit' }
     let(:hook_real_path) { File.join(GitHooks.base_path, 'hook.sample') }
@@ -96,7 +91,7 @@ describe GitHooks do
       expect(File)
         .to receive(:symlink)
         .with(hook_real_path, git_hook_path)
-      install_hook
+      install
     end
 
     it { is_expected.to be_truthy }

@@ -30,19 +30,18 @@ module GitHooks
     end
 
     def base_path
-      File.absolute_path(File.join(File.expand_path(__FILE__), '..', '..'))
+      File.expand_path('../..', __FILE__)
     end
 
     def hook_installed?(hook)
       hook_file = File.join(Dir.pwd, '.git', 'hooks', hook)
       real_hook_file = File.join(base_path, HOOK_SAMPLE_FILE)
 
-      return false unless File.symlink?(hook_file)
-      File.realpath(hook_file) == real_hook_file
+      File.symlink?(hook_file) && File.realpath(hook_file) == real_hook_file
     end
 
-    def install_hook(hook)
-      File.symlink(real_hook_template_path, ".git/hooks/#{hook}")
+    def install(hook)
+      File.symlink(real_hook_template_path, File.join('.git', 'hooks', hook))
     end
 
     def validate_hooks!
@@ -52,8 +51,7 @@ module GitHooks
     private
 
     def valid_pre_commit_hook?
-      return true if configurations.pre_commits.empty?
-      hook_installed?(PRE_COMMIT)
+      configurations.pre_commits.empty? || hook_installed?(PRE_COMMIT)
     end
 
     def real_hook_template_path

@@ -1,0 +1,16 @@
+0.1.0
+
+* Add configuration command on cli
+
+0.1.0.pre
+
+ * Add tests for each pre-commit
+ * Include configurations
+ * Fix rubocop offences
+ * Rewrite pre-commits to extract RspecExecutor and Git
+ * Add pre-commit hook existence validator
+ * Add .git_hooks.yml to configure hooks
+
+0.0.2
+
+* Rubocop, Prevent master and Rspec pre-commits

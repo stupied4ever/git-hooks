@@ -19,18 +19,17 @@ Or install it yourself as:
 ## Usage
 ### Install git_hooks on project.
 
-```
+```bash
 $ git_hooks install pre-commit
 ```
 
 ### Create configuration file
 
-Create a ```.git_hooks.yml``` on project root.
+Create a `.git_hooks.yml` on project root.
 
 ```bash
-$ git_hooks configure
+$ git_hooks init
 ```
-
 
 By now you will find only some simple hooks to:
 
@@ -40,15 +39,15 @@ By now you will find only some simple hooks to:
 
 ### Ensure hooks existence
 
-To ensure that hooks exists on ```.git/hooks```, include on your application
-start up (probably  ```config/environments/development.rb``` or
-```config/environments/test.rb```)
+To ensure that hooks exists on `.git/hooks`, include on your application
+start up (probably  `config/environments/development.rb` or
+`config/environments/test.rb`)
 
 ```ruby
 GitHooks.validate_hooks!
 ```
 
-This will force ```git_hooks``` installation before your application start.
+This will force `git_hooks` installation before your application start.
 
 ## Contributing
 
