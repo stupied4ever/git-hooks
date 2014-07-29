@@ -5,10 +5,13 @@ describe GitHooks do
     before { GitHooks.configurations = configs }
 
     let(:configs) do
-      instance_double(GitHooks::Configurations, pre_commits: pre_commits)
+      GitHooks::Configurations.new(config_file: config_file)
     end
 
-    let(:pre_commits) { %w(foo bar) }
+    let(:config_file) do
+      GitHooks::ConfigFile.new(fixture_path('git_hooks.yml'))
+    end
+
     let(:hook_installed?) { true }
 
     before do
@@ -70,8 +73,6 @@ describe GitHooks do
       expect { set_configurations }.to change {
         GitHooks.configurations
       }.to(configs)
-
-      is_expected.to eq(configs)
     end
   end
 
