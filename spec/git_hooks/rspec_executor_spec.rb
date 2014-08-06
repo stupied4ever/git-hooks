@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module GitHooks
   describe RspecExecutor do
     subject(:rspec_executor) { described_class.new }

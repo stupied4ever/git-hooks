@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module GitHooks
   describe Git do
     subject(:git) { described_class.new(working_folder) }
@@ -44,7 +45,7 @@ module GitHooks
       end
 
       it 'merges added and modified' do
-        is_expected.to eq(%i(foo bar))
+        is_expected.to eq([:foo, :bar])
       end
     end
 

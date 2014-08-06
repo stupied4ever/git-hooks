@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require_relative '../lib/git-hooks'
 
 def fixture_path(filename)
