@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module GitHooks
   module PreCommit
     class Rspec

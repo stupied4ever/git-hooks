@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module GitHooks
   module Exceptions
     class MissingHook < RuntimeError

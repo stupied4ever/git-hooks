@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 describe GitHooks do
   describe '#validate_hooks!' do
     subject { -> { described_class.validate_hooks! } }
@@ -61,18 +62,21 @@ describe GitHooks do
   end
 
   describe 'configurations=' do
-    subject(:set_configurations) { described_class.configurations = configs }
+    subject(:set_configurations) do
+      described_class.configurations = other_configs
+    end
 
     let(:configs) { instance_double(GitHooks::Configurations) }
+    let(:other_configs) { instance_double(GitHooks::Configurations) }
 
     before do
-      allow(GitHooks::Configurations).to receive(:new).and_return(nil)
+      described_class.configurations = configs
     end
 
     it 'updates configurations' do
       expect { set_configurations }.to change {
         GitHooks.configurations
-      }.to(configs)
+      }.from(configs).to(other_configs)
     end
   end
 

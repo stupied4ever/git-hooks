@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module GitHooks
   describe Configurations do
     subject(:configurations) { described_class.new }

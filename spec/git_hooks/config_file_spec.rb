@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module GitHooks
   describe ConfigFile do
     subject(:config) { described_class.new(path) }

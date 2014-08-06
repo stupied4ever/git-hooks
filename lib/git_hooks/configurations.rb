@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'forwardable'
 
 module GitHooks
@@ -6,12 +7,12 @@ module GitHooks
 
     attr_reader :config_file, :git_repository
 
-    def initialize(
-      config_file: default_config_file,
-      git_repository: default_git_repository
-    )
-      @config_file = config_file
-      @git_repository = git_repository
+    def initialize(options = {})
+      options[:config_file] ||=  default_config_file
+      options[:git_repository] ||= default_git_repository
+
+      @config_file = options[:config_file]
+      @git_repository = options[:git_repository]
 
       super(config_file)
     end

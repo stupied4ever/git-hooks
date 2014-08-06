@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module GitHooks
   describe RubocopValidator do
     subject(:rubocop_validator) { described_class.new }
