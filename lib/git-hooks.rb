@@ -8,6 +8,7 @@ require_relative 'git_hooks/git'
 require_relative 'git_hooks/config_file'
 require_relative 'git_hooks/rspec_executor'
 require_relative 'git_hooks/rubocop_validator'
+require_relative 'git_hooks/whitespace_validator'
 
 require_relative 'git_hooks/exceptions'
 require_relative 'git_hooks/pre_commit'
