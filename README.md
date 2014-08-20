@@ -1,6 +1,6 @@
 # GitHooks
 
-Some usefull ruby git hooks.
+Some usefull git hooks, it's written on ruby but can be used for other languages.
 
 ## Installation
 
