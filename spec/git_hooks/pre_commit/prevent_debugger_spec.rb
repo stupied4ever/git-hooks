@@ -30,7 +30,6 @@ module GitHooks
           binding.remote_pry
           save_and_open_page
           debugger
-          logger.debug
         ).each do |debugger_string|
           context "when has #{debugger_string}" do
             let(:file_content) { "this is a big file with #{debugger_string}" }

@@ -27,7 +27,7 @@ module GitHooks
         Regexp.union(
           %w(
             binding.pry binding.remote_pry
-            save_and_open_page debugger logger.debug
+            save_and_open_page debugger
           )
         )
       end
