@@ -1,3 +1,9 @@
+[![Version](http://allthebadges.io/stupied4ever/git-hooks/badge_fury.png)](http://allthebadges.io/stupied4ever/git-hooks/badge_fury)
+[![Dependencies](http://allthebadges.io/stupied4ever/git-hooks/gemnasium.png)](http://allthebadges.io/stupied4ever/git-hooks/gemnasium)
+[![Build Status](http://allthebadges.io/stupied4ever/git-hooks/travis.png)](http://allthebadges.io/stupied4ever/git-hooks/travis)
+[![Coverage](http://allthebadges.io/stupied4ever/git-hooks/coveralls.png)](http://allthebadges.io/stupied4ever/git-hooks/coveralls)
+[![Code Climate](http://allthebadges.io/stupied4ever/git-hooks/code_climate.png)](http://allthebadges.io/stupied4ever/git-hooks/code_climate)
+
 # GitHooks
 
 Some usefull git hooks, it's written on ruby but can be used for other languages.
