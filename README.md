@@ -36,6 +36,7 @@ By now you will find only some simple hooks to:
  - Prevent commit on master.
  - Prevent commit with rubocop offences.
  - prevent commit with broken rspec tests.
+ - prevent commit with debugger
 
 ### Ensure hooks existence
 
