@@ -46,26 +46,27 @@ describe GitHooks do
   describe '.configurations' do
     subject(:configurations) { described_class.configurations }
 
-    before do
-      GitHooks.configurations = nil
-      allow(GitHooks::Configurations).to receive(:new).and_return(configs)
-    end
+    before { GitHooks.configurations = nil }
 
     let(:configs) { instance_double(GitHooks::Configurations) }
 
     it 'creates with default params' do
-      expect(GitHooks::Configurations).to receive(:new).with(no_args)
+      expect(GitHooks::Configurations)
+        .to receive(:new)
+        .with(no_args)
+        .and_return(configs)
 
       is_expected.to eq(configs)
     end
   end
 
   describe 'configurations=' do
-    subject(:set_configurations) { described_class.configurations = configs }
+    subject(:set_configurations) { GitHooks.configurations = configs }
 
     let(:configs) { instance_double(GitHooks::Configurations) }
 
     before do
+      GitHooks.configurations = nil
       allow(GitHooks::Configurations).to receive(:new).and_return(nil)
     end
 
