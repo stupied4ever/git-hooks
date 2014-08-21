@@ -1,5 +1,5 @@
 module GitHooks
-  class WhitespaceValidator
+  class TrailingWhitespaceValidator
     def errors?(files)
       files
         .map { |file| File.open(file) }

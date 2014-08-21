@@ -1,6 +1,6 @@
 module GitHooks
-  describe WhitespaceValidator do
-    subject(:whitespace_validator) { described_class.new }
+  describe TrailingSpaceValidator do
+    subject(:validator) { described_class.new }
 
     let(:file_names) { %w(a.rb b.rb) }
     let(:files) { [file] * 2 }
@@ -12,7 +12,7 @@ module GitHooks
     end
 
     describe '#errors?' do
-      subject(:errors?) { whitespace_validator.errors?(files) }
+      subject(:errors?) { validator.errors?(files) }
 
       context 'with files' do
         context 'when files has no offences' do

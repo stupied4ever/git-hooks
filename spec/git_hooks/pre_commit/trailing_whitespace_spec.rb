@@ -1,6 +1,6 @@
 module GitHooks
   module PreCommit
-    describe Whitespace do
+    describe TrailingWhitespace do
       subject(:whitespace) do
         described_class.new(git_repository, whitespace_validator)
       end
@@ -10,7 +10,7 @@ module GitHooks
       end
 
       let(:whitespace_validator) do
-        instance_double(GitHooks::WhitespaceValidator, errors?: errors?)
+        instance_double(GitHooks::TrailingWhitespaceValidator, errors?: errors?)
       end
 
       let(:added_or_modified) { [] }
@@ -49,21 +49,24 @@ module GitHooks
       describe '.validate' do
         subject(:validate) { described_class.validate }
 
-        let(:whitespace) { instance_double(Whitespace) }
+        let(:whitespace) { instance_double(TrailingWhitespace) }
         let(:git) { instance_double(Git) }
-        let(:whitespace_validator) { instance_double(WhitespaceValidator) }
+        let(:whitespace_validator) do
+          instance_double(TrailingWhitespaceValidator)
+        end
 
         before do
           allow(described_class).to receive(:new).and_return(whitespace)
           allow(whitespace).to receive(:validate).and_return(nil)
 
           allow(GitHooks).to receive(:git_repository).and_return(git)
-          allow(WhitespaceValidator).to receive(:new)
+          allow(TrailingWhitespaceValidator).to receive(:new)
             .and_return(whitespace_validator)
         end
 
         it 'creates object with GitHooks.git_repository' do
-          expect(Whitespace).to receive(:new).with(git, whitespace_validator)
+          expect(TrailingWhitespace).to receive(:new)
+            .with(git, whitespace_validator)
 
           validate
         end
