@@ -51,7 +51,7 @@ start up (probably  `config/environments/development.rb` or
 `config/environments/test.rb`)
 
 ```ruby
-GitHooks.validate_hooks!
+GitHooks::Validator.validate_all!
 ```
 
 This will force `git_hooks` installation before your application start.

@@ -7,6 +7,7 @@ require_relative 'git_hooks/configurations'
 require_relative 'git_hooks/git'
 require_relative 'git_hooks/config_file'
 require_relative 'git_hooks/installer'
+require_relative 'git_hooks/validator'
 require_relative 'git_hooks/rspec_executor'
 require_relative 'git_hooks/rubocop_validator'
 require_relative 'git_hooks/trailing_whitespace_validator'
@@ -37,21 +38,6 @@ module GitHooks
 
     def base_path
       File.expand_path('../..', __FILE__)
-    end
-
-    def validate_hooks!
-      HOOKS.each { |hook| validate_hook!(hook) }
-    end
-
-    private
-
-    def validate_hook!(hook)
-      fail Exceptions::MissingHook, hook if configurations.send(hook).any? &&
-        !Installer.new(hook).installed?
-    end
-
-    def real_hook_template_path
-      File.join(base_path, HOOK_SAMPLE_FILE)
     end
   end
 end

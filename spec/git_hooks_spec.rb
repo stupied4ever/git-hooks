@@ -10,47 +10,6 @@ describe GitHooks do
     )
   end
 
-  describe '#validate_hooks!' do
-    subject { -> { described_class.validate_hooks! } }
-
-    before do
-      allow(GitHooks::Installer)
-        .to receive(:new)
-        .and_return(installer)
-
-      GitHooks.configurations = configs
-    end
-
-    let(:hook) { 'pre_commit' }
-
-    let(:configs) do
-      GitHooks::Configurations.new(config_file: config_file)
-    end
-
-    let(:config_file) do
-      GitHooks::ConfigFile.new(fixture_path('git_hooks.yml'))
-    end
-
-    let(:installed?) { true }
-    let(:installer) { instance_double(GitHooks::Installer) }
-
-    before do
-      allow(installer).to receive(:installed?).and_return(installed?)
-    end
-
-    it { is_expected.to_not raise_error }
-
-    context 'but without pre-commit installed' do
-      let(:installed?) { false }
-
-      let(:message) { "Please install #{hook} hook." }
-
-      it do
-        is_expected.to raise_error(GitHooks::Exceptions::MissingHook, message)
-      end
-    end
-  end
-
   describe '.base_path' do
     subject { described_class.base_path }
 
