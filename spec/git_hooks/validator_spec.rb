@@ -1,6 +1,10 @@
 describe GitHooks::Validator do
   describe '.validate_all!' do
-    subject(:validate_all!) { described_class.validate_all! }
+    subject(:validate) { described_class.validate_all!(config_file) }
+
+    let(:config_file) do
+      GitHooks::ConfigFile.new(fixture_path('git_hooks.yml'))
+    end
 
     let(:validator) { instance_double(described_class) }
 
@@ -11,10 +15,12 @@ describe GitHooks::Validator do
       end
 
       it "creates a validator for #{hook} and validate! it" do
-        expect(described_class).to receive(:new).with(hook, GitHooks.configurations)
+        expect(described_class)
+          .to receive(:new)
+          .with(hook, config_file)
         expect(validator).to receive(:validate!)
 
-        validate_all!
+        validate
       end
     end
   end

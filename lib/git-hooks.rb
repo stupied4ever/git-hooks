@@ -8,6 +8,7 @@ require_relative 'git_hooks/git'
 require_relative 'git_hooks/config_file'
 require_relative 'git_hooks/installer'
 require_relative 'git_hooks/validator'
+require_relative 'git_hooks/executor'
 require_relative 'git_hooks/rspec_executor'
 require_relative 'git_hooks/rubocop_validator'
 require_relative 'git_hooks/trailing_whitespace_validator'
@@ -25,12 +26,6 @@ module GitHooks
 
   class << self
     attr_writer :configurations
-
-    def execute_pre_commit
-      configurations.pre_commit.each do |pre_commit|
-        GitHooks::PreCommit.const_get(pre_commit).validate
-      end
-    end
 
     def configurations
       @configurations ||= Configurations.new

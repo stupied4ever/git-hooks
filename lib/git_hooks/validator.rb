@@ -2,8 +2,10 @@ module GitHooks
   class Validator
     attr_accessor :hook, :configurations
 
-    def self.validate_all!
-      GitHooks::HOOKS.each { |hook| new(hook, GitHooks.configurations).validate! }
+    def self.validate_all!(configurations = GitHooks.configurations)
+      GitHooks::HOOKS.each do |hook|
+        Validator.new(hook, configurations).validate!
+      end
     end
 
     def initialize(hook, configurations)

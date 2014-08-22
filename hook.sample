@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
 require 'git-hooks'
 
-GitHooks.execute_pre_commit
+
+GitHooks::Executor.new(File.basename(__FILE__)).execute!
