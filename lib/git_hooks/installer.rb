@@ -8,8 +8,14 @@ module GitHooks
       @hook = hook
     end
 
-    def install
-      File.symlink(hook_template_path, File.join('.git', 'hooks', hook))
+    def install(force = false)
+      return true if hook_installed?
+
+      FileUtils.symlink(
+        hook_template_path, File.join('.git', 'hooks', hook), force: force
+      )
+    rescue Errno::EEXIST
+      raise GitHooks::Exceptions::UnknowHookPresent, hook
     end
 
     def hook_installed?

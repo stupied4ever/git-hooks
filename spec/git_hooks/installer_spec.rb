@@ -17,16 +17,60 @@ describe GitHooks::Installer do
     subject(:install) { installer.install }
 
     before do
-      allow(File).to receive(:symlink).and_return(true)
+      allow(installer).to receive(:hook_installed?).and_return(false)
+      allow(FileUtils).to receive(:symlink).and_return(true)
     end
 
     it 'creates symlink' do
-      expect(File).to receive(:symlink).with(hook_real_path, git_hook_path)
+      expect(FileUtils)
+        .to receive(:symlink)
+        .with(hook_real_path, git_hook_path, force: false)
 
       install
     end
 
     it { is_expected.to be_truthy }
+
+    context 'when there is a unknow hook' do
+      before do
+        allow(FileUtils).to receive(:symlink).and_raise(Errno::EEXIST)
+      end
+
+      it 'raises an error' do
+        expect { install }.to raise_error(
+          GitHooks::Exceptions::UnknowHookPresent
+        )
+      end
+    end
+
+    context 'when there is a unknow hook but I want to force installation' do
+      subject(:install) { installer.install true }
+
+      it 'creates symlink with force option' do
+        expect(FileUtils)
+          .to receive(:symlink)
+          .with(hook_real_path, git_hook_path, force: true)
+
+        install
+      end
+
+      it { is_expected.to be_truthy }
+    end
+
+    context 'when hook is already installed' do
+      before do
+        allow(installer).to receive(:hook_installed?).and_return(true)
+      end
+
+      it 'does not create symlink' do
+        expect(FileUtils)
+          .to_not receive(:symlink)
+
+        install
+      end
+
+      it { is_expected.to be_truthy }
+    end
   end
 
   describe '.hook_installed?' do
