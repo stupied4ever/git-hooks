@@ -42,7 +42,7 @@ module GitHooks
 
     def valid_pre_commit_hook?
       configurations.pre_commits.empty? ||
-        Installer.new(PRE_COMMIT).hook_installed?
+        Installer.new(PRE_COMMIT).installed?
     end
 
     def real_hook_template_path

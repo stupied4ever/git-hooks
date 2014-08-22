@@ -19,17 +19,17 @@ describe GitHooks do
       GitHooks::ConfigFile.new(fixture_path('git_hooks.yml'))
     end
 
-    let(:hook_installed?) { true }
+    let(:installed?) { true }
     let(:installer) { instance_double(GitHooks::Installer) }
 
     before do
-      allow(installer).to receive(:hook_installed?).and_return(hook_installed?)
+      allow(installer).to receive(:installed?).and_return(installed?)
     end
 
     it { is_expected.to_not raise_error }
 
     context 'but without pre-commit installed' do
-      let(:hook_installed?) { false }
+      let(:installed?) { false }
 
       let(:message) { 'Please install pre-commit hook.' }
 

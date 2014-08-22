@@ -9,7 +9,7 @@ module GitHooks
     end
 
     def install(force = false)
-      return true if hook_installed?
+      return true if installed?
 
       FileUtils.symlink(
         hook_template_path, File.join('.git', 'hooks', hook), force: force
@@ -18,7 +18,7 @@ module GitHooks
       raise GitHooks::Exceptions::UnknowHookPresent, hook
     end
 
-    def hook_installed?
+    def installed?
       hook_file = File.join(Dir.pwd, '.git', 'hooks', hook)
 
       File.symlink?(hook_file) && File.realpath(hook_file) == hook_template_path

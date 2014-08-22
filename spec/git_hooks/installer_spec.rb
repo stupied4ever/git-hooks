@@ -17,7 +17,7 @@ describe GitHooks::Installer do
     subject(:install) { installer.install }
 
     before do
-      allow(installer).to receive(:hook_installed?).and_return(false)
+      allow(installer).to receive(:installed?).and_return(false)
       allow(FileUtils).to receive(:symlink).and_return(true)
     end
 
@@ -59,7 +59,7 @@ describe GitHooks::Installer do
 
     context 'when hook is already installed' do
       before do
-        allow(installer).to receive(:hook_installed?).and_return(true)
+        allow(installer).to receive(:installed?).and_return(true)
       end
 
       it 'does not create symlink' do
@@ -73,8 +73,8 @@ describe GitHooks::Installer do
     end
   end
 
-  describe '.hook_installed?' do
-    subject(:installed?) { installer.hook_installed? }
+  describe '.installed?' do
+    subject(:installed?) { installer.installed? }
 
     let(:symlink?) { true }
 
