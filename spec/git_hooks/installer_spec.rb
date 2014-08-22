@@ -31,7 +31,7 @@ describe GitHooks::Installer do
 
     it { is_expected.to be_truthy }
 
-    context 'when there is a unknow hook' do
+    context 'when there is a unknown hook' do
       before do
         allow(FileUtils).to receive(:symlink).and_raise(Errno::EEXIST)
       end
@@ -43,7 +43,7 @@ describe GitHooks::Installer do
       end
     end
 
-    context 'when there is a unknow hook but I want to force installation' do
+    context 'when there is a unknown hook but I want to force installation' do
       subject(:install) { installer.install true }
 
       it 'creates symlink with force option' do
