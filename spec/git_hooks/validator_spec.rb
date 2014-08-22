@@ -11,7 +11,7 @@ describe GitHooks::Validator do
       end
 
       it "creates a validator for #{hook} and validate! it" do
-        expect(described_class).to receive(:new).with(hook)
+        expect(described_class).to receive(:new).with(hook, GitHooks.configurations)
         expect(validator).to receive(:validate!)
 
         validate_all!

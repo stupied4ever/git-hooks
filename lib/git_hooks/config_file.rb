@@ -1,3 +1,5 @@
+require 'ostruct'
+
 module GitHooks
   class ConfigFile < OpenStruct
     attr_accessor :path
