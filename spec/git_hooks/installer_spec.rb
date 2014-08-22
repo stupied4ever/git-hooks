@@ -1,17 +1,18 @@
 describe GitHooks::Installer do
   subject(:installer) { described_class.new(hook) }
 
-  let(:hook) { 'pre-commit' }
+  let(:hook) { 'pre_commit' }
+  let(:hook_file_name) { hook.gsub('_', '-') }
 
   let(:hook_real_path) do
     File.join(GitHooks.base_path, 'hook.sample')
   end
 
   let(:absolute_path) do
-    File.join(GitHooks.base_path, '.git', 'hooks', hook)
+    File.join(GitHooks.base_path, '.git', 'hooks', hook_file_name)
   end
 
-  let(:git_hook_path) { ".git/hooks/#{hook}" }
+  let(:git_hook_path) { ".git/hooks/#{hook_file_name}" }
 
   describe '.install' do
     subject(:install) { installer.install }
