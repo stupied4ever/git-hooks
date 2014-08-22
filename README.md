@@ -26,7 +26,7 @@ Or install it yourself as:
 ### Install git_hooks on project.
 
 ```bash
-$ git_hooks install pre-commit
+$ git_hooks install pre-commit [--force]
 ```
 
 ### Create configuration file
