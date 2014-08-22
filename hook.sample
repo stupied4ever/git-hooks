@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
 require 'git-hooks'
 
-GitHooks.execute_pre_commits
+GitHooks.execute_pre_commit

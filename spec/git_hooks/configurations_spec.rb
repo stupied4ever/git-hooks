@@ -3,24 +3,17 @@ module GitHooks
     subject(:configurations) { described_class.new }
 
     before do
-      allow(ConfigFile).to receive(:new).and_return(file)
+      allow(ConfigFile).to receive(:new).and_return(default_config_file)
       allow(Git).to receive(:new).and_return(repository)
     end
 
-    let(:file) { instance_double(ConfigFile) }
+    let(:default_config_file) { ConfigFile.new(fixture_path('git_hooks.yml')) }
     let(:repository) { instance_double(Git) }
 
-    describe '#pre_commits' do
-      subject { configurations.pre_commits }
+    describe '#pre_commit' do
+      subject { configurations.pre_commit }
 
-      let(:configurations) { described_class.new(config_file: config_file) }
-      let(:pre_commits) { %w(foo, bar) }
-
-      let(:config_file) do
-        instance_double(ConfigFile, pre_commits: pre_commits)
-      end
-
-      it { is_expected.to eq(pre_commits) }
+      it { is_expected.to eq(default_config_file.pre_commit) }
     end
 
     describe '#config_file' do
@@ -28,7 +21,7 @@ module GitHooks
 
       let(:config_path) { '.git_hooks.yml' }
 
-      it { is_expected.to eq(file) }
+      it { is_expected.to eq(default_config_file) }
 
       it 'creates a config file with config_path' do
         expect(ConfigFile).to receive(:new).with(config_path)
@@ -37,9 +30,9 @@ module GitHooks
       end
 
       context 'with a config_path set' do
-        let(:configurations) do
-          described_class.new(config_file: file)
-        end
+        let(:configurations) { described_class.new(config_file: config_file) }
+
+        let(:config_file) { double }
 
         it 'does not creates a config file' do
           expect(ConfigFile).to_not receive(:new)
@@ -47,7 +40,7 @@ module GitHooks
           configurations
         end
 
-        it { is_expected.to eq(file) }
+        it { is_expected.to eq(config_file) }
       end
     end
 

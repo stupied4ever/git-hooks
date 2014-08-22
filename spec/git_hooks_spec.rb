@@ -1,15 +1,27 @@
 describe GitHooks do
+  it 'know all hooks' do
+    expect(described_class::HOOKS).to eq(
+      %w(
+        applypatch_msg pre_applypatch post_applypatch pre_commit
+        prepare_commit_msg commit_msg post_commit pre_rebase post_checkout
+        post_merge pre_receive update post_receive post_update pre_auto_gc
+        post_rewrite pre_push
+      )
+    )
+  end
+
   describe '#validate_hooks!' do
     subject { -> { described_class.validate_hooks! } }
 
     before do
       allow(GitHooks::Installer)
         .to receive(:new)
-        .with(GitHooks::PRE_COMMIT)
         .and_return(installer)
 
       GitHooks.configurations = configs
     end
+
+    let(:hook) { 'pre_commit' }
 
     let(:configs) do
       GitHooks::Configurations.new(config_file: config_file)
@@ -31,7 +43,7 @@ describe GitHooks do
     context 'but without pre-commit installed' do
       let(:installed?) { false }
 
-      let(:message) { 'Please install pre-commit hook.' }
+      let(:message) { "Please install #{hook} hook." }
 
       it do
         is_expected.to raise_error(GitHooks::Exceptions::MissingHook, message)

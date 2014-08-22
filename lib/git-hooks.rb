@@ -16,13 +16,17 @@ require_relative 'git_hooks/pre_commit'
 
 module GitHooks
   HOOK_SAMPLE_FILE = 'hook.sample'
-  HOOKS = [PRE_COMMIT = 'pre-commit']
+  HOOKS = %w(
+    applypatch_msg pre_applypatch post_applypatch pre_commit prepare_commit_msg
+    commit_msg post_commit pre_rebase post_checkout post_merge pre_receive
+    update post_receive post_update pre_auto_gc post_rewrite pre_push
+  )
 
   class << self
     attr_writer :configurations
 
-    def execute_pre_commits
-      configurations.pre_commits.each do |pre_commit|
+    def execute_pre_commit
+      configurations.pre_commit.each do |pre_commit|
         GitHooks::PreCommit.const_get(pre_commit).validate
       end
     end
@@ -36,14 +40,14 @@ module GitHooks
     end
 
     def validate_hooks!
-      fail Exceptions::MissingHook, PRE_COMMIT unless valid_pre_commit_hook?
+      HOOKS.each { |hook| validate_hook!(hook) }
     end
 
     private
 
-    def valid_pre_commit_hook?
-      configurations.pre_commits.empty? ||
-        Installer.new(PRE_COMMIT).installed?
+    def validate_hook!(hook)
+      fail Exceptions::MissingHook, hook if configurations.send(hook).any? &&
+        !Installer.new(hook).installed?
     end
 
     def real_hook_template_path

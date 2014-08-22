@@ -1,17 +1,26 @@
 module GitHooks
-  class ConfigFile
+  class ConfigFile < OpenStruct
+    attr_accessor :path
+
     def initialize(path)
-      @content = YAML.load_file(path)
+      @path = path
+
+      super(load_file)
+    end
+
+    private
+
+    def load_file
+      content = YAML.load_file(path)
+      default_config.merge(content)
     rescue Errno::ENOENT
-      @content = {}
+      default_config
     end
 
-    def pre_commits
-      content.fetch('pre_commits') { [] }
-    end
-
-    def content
-      @content || { 'pre_commits' => [] }
+    def default_config
+      GitHooks::HOOKS.each_with_object({}) do |hook, hash|
+        hash[hook.to_sym] = []
+      end
     end
   end
 end

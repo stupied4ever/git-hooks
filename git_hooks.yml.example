@@ -1,5 +1,5 @@
 ---
-pre_commits:
+pre_commit:
 - GitHooks::PreCommit::PreventDebugger
 - GitHooks::PreCommit::PreventMaster
 - GitHooks::PreCommit::Rubocop
