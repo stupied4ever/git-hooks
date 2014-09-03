@@ -1,3 +1,11 @@
+0.2.0
+
+* Add whitespace validation (by @rranelli)
+* Handle Errno::EEXIST on hook installation
+* Add whitespace validation (by @rranelli)
+* Add all the bagdes
+* Add PreCommit::PreventDebugger
+
 0.1.0
 
 * Add configuration command on cli
