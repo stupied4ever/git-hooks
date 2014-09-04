@@ -31,7 +31,9 @@ describe GitHooks do
     context 'but without pre-commit installed' do
       let(:installed?) { false }
 
-      let(:message) { 'Please install pre-commit hook.' }
+      let(:message) do
+        "Please install pre-commit hook with `git_hooks install pre-commit'"
+      end
 
       it do
         is_expected.to raise_error(GitHooks::Exceptions::MissingHook, message)
