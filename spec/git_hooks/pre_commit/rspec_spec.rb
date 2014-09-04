@@ -47,21 +47,17 @@ module GitHooks
 
         let(:rspec) { instance_double(Rspec) }
         let(:rspec_executor) { instance_double(RspecExecutor) }
-        let(:git) { instance_double(GitHooks::Git) }
 
-        let(:configurations) do
-          instance_double(Configurations, git_repository: git)
-        end
+        let(:git) { GitHooks.configurations.git_repository }
 
         before do
           allow(described_class).to receive(:new).and_return(rspec)
           allow(rspec).to receive(:validate).and_return(nil)
 
-          allow(GitHooks).to receive(:configurations).and_return(configurations)
           allow(RspecExecutor).to receive(:new).and_return(rspec_executor)
         end
 
-        it 'creates object with GitHooks.git_repository' do
+        it 'creates object with git_repository and rspec_executor' do
           expect(Rspec).to receive(:new).with(git, rspec_executor)
 
           validate

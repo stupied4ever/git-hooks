@@ -43,19 +43,14 @@ module GitHooks
         subject(:validate) { described_class.validate }
 
         let(:prevent_debugger) { instance_double(PreventDebugger) }
-        let(:git) { instance_double(GitHooks::Git) }
-
-        let(:configurations) do
-          instance_double(Configurations, git_repository: git)
-        end
+        let(:git) { GitHooks.configurations.git_repository }
 
         before do
-          allow(GitHooks).to receive(:configurations).and_return(configurations)
           allow(described_class).to receive(:new).and_return(prevent_debugger)
           allow(prevent_debugger).to receive(:validate).and_return(nil)
         end
 
-        it 'creates object with GitHooks.git_repository' do
+        it 'creates object with git_repository' do
           expect(PreventDebugger).to receive(:new).with(git)
 
           validate
