@@ -50,21 +50,21 @@ module GitHooks
         subject(:validate) { described_class.validate }
 
         let(:whitespace) { instance_double(TrailingWhitespace) }
-        let(:git) { instance_double(Git) }
         let(:whitespace_validator) do
           instance_double(TrailingWhitespaceValidator)
         end
+
+        let(:git) { GitHooks.configurations.git_repository }
 
         before do
           allow(described_class).to receive(:new).and_return(whitespace)
           allow(whitespace).to receive(:validate).and_return(nil)
 
-          allow(GitHooks).to receive(:git_repository).and_return(git)
           allow(TrailingWhitespaceValidator).to receive(:new)
             .and_return(whitespace_validator)
         end
 
-        it 'creates object with GitHooks.git_repository' do
+        it 'creates object with git_repository and whitespace_validator' do
           expect(TrailingWhitespace).to receive(:new)
             .with(git, whitespace_validator)
 

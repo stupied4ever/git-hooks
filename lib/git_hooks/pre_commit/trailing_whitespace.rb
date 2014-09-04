@@ -4,7 +4,10 @@ module GitHooks
       attr_reader :git_repository, :trailing_whitespace_validator
 
       def self.validate
-        new(GitHooks.git_repository, TrailingWhitespaceValidator.new).validate
+        new(
+          GitHooks.configurations.git_repository,
+          TrailingWhitespaceValidator.new
+        ).validate
       end
 
       def initialize(git_repository, trailing_whitespace_validator)
