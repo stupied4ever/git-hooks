@@ -1,9 +1,11 @@
 module GitHooks
   module PreCommit
     class Rubocop
-      def self.validate
+      def self.validate(options = {})
         new(
-          GitHooks.configurations.git_repository, RubocopValidator.new
+          GitHooks.configurations.git_repository,
+          RubocopValidator.new,
+          options
         ).validate
       end
 
@@ -15,6 +17,8 @@ module GitHooks
       def validate
         abort 'Check rubocop offences' if offences?
       end
+
+      protected
 
       attr_reader :git, :rubocop_validator, :options
 
@@ -31,10 +35,10 @@ module GitHooks
       end
 
       def stash_me_maybe
-        git.repository.lib.stash_save('rubocop-stash') if options[:use_stash]
+        git.repository.lib.stash_save('rubocop-stash') if options['use_stash']
         yield
       ensure
-        git.repository.lib.stash_apply if options[:use_stash]
+        git.repository.lib.stash_apply if options['use_stash']
       end
     end
   end
