@@ -27,14 +27,14 @@ module GitHooks
       end
 
       def offences?
-        if options[:use_stash]
-          git.repository.lib.stash_save('rubocop-stash')
-          rubocop_validator.errors?(changed_files).tap do
-            git.repository.lib.stash_apply
-          end
-        else
-          rubocop_validator.errors?(changed_files)
-        end
+        stash_me_maybe { rubocop_validator.errors?(changed_files) }
+      end
+
+      def stash_me_maybe
+        git.repository.lib.stash_save('rubocop-stash') if options[:use_stash]
+        yield
+      ensure
+        git.repository.lib.stash_apply if options[:use_stash]
       end
     end
   end
