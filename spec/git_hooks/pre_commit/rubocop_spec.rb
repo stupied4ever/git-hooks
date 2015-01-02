@@ -74,7 +74,8 @@ module GitHooks
               expect(lib).to receive(:stash_save).with('rubocop-stash')
               expect(lib).to receive(:stash_apply)
 
-              expect(-> { validate }).to raise_error
+              expect(-> { validate }).to raise_error(SystemExit)
+                .and output("Check rubocop offences\n").to_stderr
             end
           end
         end
