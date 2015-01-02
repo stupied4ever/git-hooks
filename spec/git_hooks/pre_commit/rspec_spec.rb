@@ -1,7 +1,7 @@
 module GitHooks
   module PreCommit
     describe Rspec do
-      subject(:rspec) { described_class.new git_repository, rspec_executor }
+      subject(:rspec) { described_class.new(git_repository, rspec_executor) }
 
       let(:git_repository) do
         instance_double(GitHooks::Git, clean?: clean?)

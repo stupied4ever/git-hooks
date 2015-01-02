@@ -1,7 +1,9 @@
 ---
 pre_commits:
-- GitHooks::PreCommit::TrailingWhitespace
-- GitHooks::PreCommit::PreventDebugger
-- GitHooks::PreCommit::PreventMaster
-- GitHooks::PreCommit::Rubocop
-- GitHooks::PreCommit::Rspec
+-
+  GitHooks::PreCommit::TrailingWhitespace:
+  GitHooks::PreCommit::PreventDebugger:
+  GitHooks::PreCommit::PreventMaster:
+  GitHooks::PreCommit::Rubocop:
+    - use_stash: true
+  GitHooks::PreCommit::Rspec:

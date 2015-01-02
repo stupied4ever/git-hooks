@@ -48,7 +48,7 @@ module GitHooks
         context 'with stash option' do
           let(:rubocop) do
             described_class.new(
-              git_repository, rubocop_validator, use_stash: true
+              git_repository, rubocop_validator, 'use_stash' => true
             )
           end
 
@@ -99,7 +99,7 @@ module GitHooks
         end
 
         it 'creates object with git_repository and rubocop_validator' do
-          expect(Rubocop).to receive(:new).with(git, rubocop_validator)
+          expect(Rubocop).to receive(:new).with(git, rubocop_validator, {})
 
           validate
         end
