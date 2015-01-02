@@ -47,7 +47,9 @@ module GitHooks
 
         context 'with stash option' do
           let(:rubocop) do
-            described_class.new(git_repository, rubocop_validator, true)
+            described_class.new(
+              git_repository, rubocop_validator, use_stash: true
+            )
           end
 
           let(:repository) { instance_double(::Git::Base) }
