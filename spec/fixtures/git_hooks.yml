@@ -1,4 +1,5 @@
 ---
 pre_commits:
-- foo
-- bar
+  Rubocop:
+    use_stash: true
+  Rspec:
