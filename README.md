@@ -45,6 +45,11 @@ By now you will find only some simple hooks to:
  - Prevent commit with debugger
  - Prevent trailing whitespace
 
+### Warning about `Rubocop` pre-commit `use_stash` option:
+
+This feature is yet experimental. Be aware that in some odd circumstances you
+may encounter merge conflicts when applying the stash.
+
 ### Ensure hooks existence
 
 To ensure that hooks exists on `.git/hooks`, include on your application
