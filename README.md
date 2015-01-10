@@ -6,11 +6,12 @@
 
 # GitHooks
 
-Some usefull git hooks, it's written on ruby but can be used for other languages.
+Some usefull git hooks, it's written on ruby but can be used for other
+languages.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add this line to your application's `Gemfile`:
 
     gem 'git-hooks'
 
@@ -23,9 +24,10 @@ Or install it yourself as:
     $ gem install git-hooks
 
 ## Usage
-### Install git_hooks on project.
+### Install git_hooks on your project.
 
 ```bash
+$ cd /path/to/project
 $ git_hooks install pre-commit [--force]
 ```
 
@@ -34,28 +36,30 @@ $ git_hooks install pre-commit [--force]
 Create a `.git_hooks.yml` on project root.
 
 ```bash
+$ cd /path/to/project
 $ git_hooks init
 ```
 
-By now you will find only some simple hooks to:
+By now you will find the following built-in hooks:
 
- - Prevent commit on master.
- - Prevent commit with rubocop offences.
- - Prevent commit with broken rspec tests.
- - Prevent commit with debugger
- - Prevent trailing whitespace
+ - Prevent commits on master branch.
+ - Prevent commits with rubocop offenses.
+ - Prevent commits with broken rspec tests.
+ - Prevent commits with debugger.
+ - Prevent commits with trailing white space.
 
 ### Ensure hooks existence
 
-To ensure that hooks exists on `.git/hooks`, include on your application
-start up (probably  `config/environments/development.rb` or
-`config/environments/test.rb`)
+To ensure that hooks exists on `.git/hooks`, include this line
 
 ```ruby
 GitHooks.validate_hooks!
 ```
 
-This will force `git_hooks` installation before your application start.
+on your application's start up (e.g. `config/environments/development.rb` or
+`config/environments/test.rb` for a rails app).
+
+This will force `git_hooks` installation before your application's start.
 
 ## Contributing
 
