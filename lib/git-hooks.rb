@@ -22,8 +22,14 @@ module GitHooks
     attr_writer :configurations
 
     def execute_pre_commits
-      configurations.pre_commits.each do |pre_commit|
-        GitHooks::PreCommit.const_get(pre_commit).validate
+      configurations.pre_commits.each do |pre_commit, options|
+        klass = GitHooks::PreCommit.const_get(pre_commit)
+
+        if options
+          klass.validate(options)
+        else
+          klass.validate
+        end
       end
     end
 
