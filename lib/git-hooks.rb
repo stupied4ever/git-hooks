@@ -23,6 +23,7 @@ module GitHooks
 
     def execute_pre_commits
       configurations.pre_commits.each do |pre_commit|
+        puts "Executing #{pre_commit}"
         GitHooks::PreCommit.const_get(pre_commit).validate
       end
     end
