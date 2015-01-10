@@ -10,7 +10,8 @@ module GitHooks
       end
 
       def initialize(git, rubocop_validator, options = {})
-        @git, @rubocop_validator = git, rubocop_validator
+        @git = git
+        @rubocop_validator = rubocop_validator
         @options = options
       end
 
@@ -27,11 +28,15 @@ module GitHooks
       def changed_files
         git
           .added_or_modified
-          .select { |file| File.extname(file) == '.rb' }
+          .select(&ruby_files)
       end
 
       def offences?
         stash_me_maybe { rubocop_validator.errors?(changed_files) }
+      end
+
+      def ruby_files
+        -> (file) { File.extname(file) == '.rb' }
       end
 
       def stash_me_maybe
