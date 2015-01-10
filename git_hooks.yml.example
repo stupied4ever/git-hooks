@@ -4,5 +4,5 @@ pre_commits:
   GitHooks::PreCommit::PreventDebugger:
   GitHooks::PreCommit::PreventMaster:
   GitHooks::PreCommit::Rubocop:
-    use_stash: true
+    use_stash: false
   GitHooks::PreCommit::Rspec:
