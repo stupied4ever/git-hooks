@@ -25,11 +25,8 @@ module GitHooks
       configurations.pre_commits.each do |pre_commit, options|
         klass = GitHooks::PreCommit.const_get(pre_commit)
 
-        if options
-          klass.validate(options)
-        else
-          klass.validate
-        end
+        next klass.validate(options) if options
+        klass.validate
       end
     end
 
