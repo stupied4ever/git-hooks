@@ -60,7 +60,7 @@ describe GitHooks do
 
     before { GitHooks.configurations = nil }
 
-    let(:configs) { GitHooks::Configurations.new }
+    let(:configs) { double(:probe) }
 
     it 'creates with default params' do
       expect(GitHooks::Configurations)
