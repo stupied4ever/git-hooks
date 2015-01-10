@@ -16,10 +16,10 @@ module GitHooks
       end
 
       def validate
-        abort 'Check presence of trailling space' if offences?
+        abort(
+          "Prevented commit with trailing whitespace in files #{offenses}"
+        ) if offenses.any?
       end
-
-      private
 
       def changed_files
         git_repository
@@ -27,8 +27,10 @@ module GitHooks
           .select { |file| File.extname(file) == '.rb' }
       end
 
-      def offences?
-        trailing_whitespace_validator.errors?(changed_files)
+      def offenses
+        changed_files.map do |file|
+          trailing_whitespace_validator.errors?([file])
+        end
       end
     end
   end
