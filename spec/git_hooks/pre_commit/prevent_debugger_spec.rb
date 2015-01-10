@@ -36,6 +36,12 @@ module GitHooks
 
             it { is_expected.to raise_error(SystemExit) }
           end
+
+          context 'when the modified file is not a ruby code file' do
+            let(:files) { ['some_text_file.txt'] }
+
+            it { is_expected.not_to raise_error }
+          end
         end
       end
 
