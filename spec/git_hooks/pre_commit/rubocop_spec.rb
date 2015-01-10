@@ -59,12 +59,13 @@ module GitHooks
             allow(repository).to receive(:lib).and_return(lib)
             allow(git_repository).to receive(:repository).and_return(repository)
             allow(lib).to receive(:stash_save).and_return(true)
-            allow(lib).to receive(:stash_apply).and_return(true)
+            allow(lib).to receive(:stash_pop).and_return(true)
+            allow(lib).to receive(:stashes_all).and_return([[0, 'rubocop-stash']])
           end
 
           it 'stashes working directory changes and reapplies them' do
             expect(lib).to receive(:stash_save).with('rubocop-stash')
-            expect(lib).to receive(:stash_apply)
+            expect(lib).to receive(:stash_pop)
 
             expect(-> { validate }).not_to raise_error
           end
@@ -74,7 +75,7 @@ module GitHooks
 
             it 'stashes working directory changes and reapplies them' do
               expect(lib).to receive(:stash_save).with('rubocop-stash')
-              expect(lib).to receive(:stash_apply)
+              expect(lib).to receive(:stash_pop)
 
               expect(-> { validate }).to raise_error(SystemExit)
                 .and output("Check rubocop offences\n").to_stderr

@@ -54,3 +54,17 @@ module GitHooks
     end
   end
 end
+
+# THIS IS A CRAZY TERRIBLE IDEA. This will be added to the original gem though
+# TODO: fix this in the ruby-git gem
+module Git
+  class Lib
+    def stash_pop(_ = nil)
+      command('stash pop')
+    end
+
+    def stash_save(message)
+      command('stash save', ['--keep-index', message])
+    end
+  end
+end

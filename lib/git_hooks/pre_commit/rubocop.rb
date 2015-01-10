@@ -1,6 +1,8 @@
 module GitHooks
   module PreCommit
     class Rubocop
+      RUBOCOP_STASH_NAME = 'rubocop-stash'
+
       def self.validate(options = {})
         new(
           GitHooks.configurations.git_repository,
@@ -39,11 +41,33 @@ module GitHooks
         -> (file) { File.extname(file) == '.rb' }
       end
 
-      def stash_me_maybe
-        git.repository.lib.stash_save('rubocop-stash') if options['use_stash']
+      def stash_me_maybe(&blk)
+        return yield unless stash_around?
+
+        stash_around(&blk)
+      end
+
+      def stash_around
+        git.repository.lib.stash_save(RUBOCOP_STASH_NAME)
         yield
       ensure
-        git.repository.lib.stash_apply if options['use_stash']
+        git.repository.lib.stash_pop(rubocop_stash_id) if rubocop_stash?
+      end
+
+      def stash_around?
+        options['use_stash']
+      end
+
+      def rubocop_stash?
+        rubocop_stash_id
+      end
+
+      def rubocop_stash_id
+        Array(
+          git.repository.lib
+            .stashes_all
+            .rassoc(RUBOCOP_STASH_NAME)
+        ).first
       end
     end
   end
