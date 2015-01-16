@@ -9,7 +9,10 @@ describe GitHooks do
     GitHooks::ConfigFile.new(fixture_path('git_hooks.yml'))
   end
 
-  before { GitHooks.configurations = configs }
+  before do
+    GitHooks.configurations = configs
+    allow($stdout).to receive(:write)
+  end
 
   describe '#validate_hooks!' do
     subject { -> { git_hooks.validate_hooks! } }
