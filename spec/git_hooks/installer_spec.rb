@@ -13,7 +13,7 @@ describe GitHooks::Installer do
 
   let(:git_hook_path) { ".git/hooks/#{hook}" }
 
-  describe '.install' do
+  describe '#install' do
     subject(:install) { installer.install }
 
     before do
@@ -73,7 +73,7 @@ describe GitHooks::Installer do
     end
   end
 
-  describe '.installed?' do
+  describe '#installed?' do
     subject(:installed?) { installer.installed? }
 
     let(:symlink?) { true }
