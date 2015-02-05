@@ -3,6 +3,8 @@ require 'yaml'
 
 require 'git'
 
+require_relative 'git_hooks/version'
+
 require_relative 'git_hooks/configurations'
 require_relative 'git_hooks/git'
 require_relative 'git_hooks/config_file'

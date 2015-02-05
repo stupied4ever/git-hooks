@@ -28,5 +28,12 @@ module GitHooks
       destination_path = File.expand_path('.git_hooks.yml', Dir.pwd)
       FileUtils.cp(example_file, destination_path)
     end
+
+    map %w(--version -v) => :version
+
+    desc 'version', 'Show git-hooks version'
+    def version
+      puts GitHooks::VERSION
+    end
   end
 end
