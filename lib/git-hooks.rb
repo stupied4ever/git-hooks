@@ -58,8 +58,10 @@ module GitHooks
   end
 end
 
-# THIS IS A CRAZY TERRIBLE IDEA. This will be added to the original gem though
-# TODO: fix this in the ruby-git gem
+# TODO: Fix this in the ruby-git gem.
+
+# Since the `Git` gem does not provide us with an api that allows you to use the
+# '--keep-index' option when stashing, we are stuck with this monkey patch.
 module Git
   class Lib
     def stash_pop(_ = nil)
