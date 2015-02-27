@@ -1,7 +1,7 @@
 module GitHooks
   module PreCommit
     class Rspec
-      def self.validate
+      def self.validate(*)
         new(
           GitHooks.configurations.git_repository,
           RspecExecutor.new

@@ -26,10 +26,8 @@ module GitHooks
     def execute_pre_commits
       configurations.pre_commits.each do |pre_commit, options|
         puts "Executing #{pre_commit}"
-        klass = GitHooks::PreCommit.const_get(pre_commit)
-
-        next klass.validate(options) if options
-        klass.validate
+        pre_commit_checker = GitHooks::PreCommit.const_get(pre_commit)
+        pre_commit_checker.validate(options)
       end
     end
 

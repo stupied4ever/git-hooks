@@ -113,7 +113,7 @@ describe GitHooks do
       expect(GitHooks::PreCommit::Rubocop).to receive(:validate)
         .with(rubocop_options)
       expect(GitHooks::PreCommit::Rspec).to receive(:validate)
-        .with(no_args)
+        .with(nil)
 
       execute_pre_commits
     end
