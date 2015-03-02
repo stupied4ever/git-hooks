@@ -3,7 +3,7 @@ module GitHooks
     class PreventMaster
       attr_reader :git_repository
 
-      def self.validate
+      def self.validate(*)
         new(GitHooks.configurations.git_repository).validate
       end
 

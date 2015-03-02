@@ -24,9 +24,10 @@ module GitHooks
     attr_writer :configurations
 
     def execute_pre_commits
-      configurations.pre_commits.each do |pre_commit|
+      configurations.pre_commits.each do |pre_commit, options|
         puts "Executing #{pre_commit}"
-        GitHooks::PreCommit.const_get(pre_commit).validate
+        pre_commit_checker = GitHooks::PreCommit.const_get(pre_commit)
+        pre_commit_checker.validate(options)
       end
     end
 
@@ -51,6 +52,22 @@ module GitHooks
 
     def real_hook_template_path
       File.join(base_path, HOOK_SAMPLE_FILE)
+    end
+  end
+end
+
+# TODO: Fix this in the ruby-git gem.
+
+# Since the `Git` gem does not provide us with an api that allows you to use the
+# '--keep-index' option when stashing, we are stuck with this monkey patch.
+module Git
+  class Lib
+    def stash_pop(_ = nil)
+      command('stash pop')
+    end
+
+    def stash_save(message)
+      command('stash save', ['--keep-index', message])
     end
   end
 end

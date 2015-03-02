@@ -44,6 +44,44 @@ module GitHooks
 
           it { expect(-> { validate }).to_not raise_error }
         end
+
+        context 'with stash option' do
+          let(:rubocop) do
+            described_class.new(
+              git_repository, rubocop_validator, 'use_stash' => true
+            )
+          end
+
+          let(:repository) { instance_double(::Git::Base) }
+          let(:lib) { instance_double(::Git::Lib) }
+
+          before do
+            allow(repository).to receive(:lib).and_return(lib)
+            allow(git_repository).to receive(:repository).and_return(repository)
+            allow(lib).to receive(:stash_save).and_return(true)
+            allow(lib).to receive(:stash_pop).and_return(true)
+            allow(lib).to receive(:stashes_all).and_return([[0, 'rubocop-stash']])
+          end
+
+          it 'stashes working directory changes and reapplies them' do
+            expect(lib).to receive(:stash_save).with('rubocop-stash')
+            expect(lib).to receive(:stash_pop)
+
+            expect(-> { validate }).not_to raise_error
+          end
+
+          context 'with validation error' do
+            let(:errors?) { true }
+
+            it 'stashes working directory changes and reapplies them' do
+              expect(lib).to receive(:stash_save).with('rubocop-stash')
+              expect(lib).to receive(:stash_pop)
+
+              expect(-> { validate }).to raise_error(SystemExit)
+                .and output("Check rubocop offences\n").to_stderr
+            end
+          end
+        end
       end
 
       describe '.validate' do
@@ -62,7 +100,7 @@ module GitHooks
         end
 
         it 'creates object with git_repository and rubocop_validator' do
-          expect(Rubocop).to receive(:new).with(git, rubocop_validator)
+          expect(Rubocop).to receive(:new).with(git, rubocop_validator, {})
 
           validate
         end

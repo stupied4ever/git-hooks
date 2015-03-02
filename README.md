@@ -6,8 +6,8 @@
 
 # GitHooks
 
-Some usefull git hooks, it's written on ruby but can be used for other
-languages.
+This gem provides an interface to write useful git hooks in Ruby. Those hooks
+can be used when working in projects in any programming language.
 
 ## Installation
 
@@ -48,16 +48,20 @@ By now you will find the following built-in hooks:
  - Prevent commits with debugger.
  - Prevent commits with trailing white space.
 
+### Warning about `Rubocop` pre-commit `use_stash` option:
+
+This feature is yet experimental. Be aware that in some odd circumstances you
+may encounter merge conflicts when applying the stash.
+
 ### Ensure hooks existence
 
-To ensure that hooks exists on `.git/hooks`, include this line
+To ensure that hooks exists on `.git/hooks`, include the following line on your
+application's start-up code (e.g. `config/environments/development.rb` or
+`config/environments/test.rb` for a rails app).
 
 ```ruby
 GitHooks.validate_hooks!
 ```
-
-on your application's start up (e.g. `config/environments/development.rb` or
-`config/environments/test.rb` for a rails app).
 
 This will force `git_hooks` installation before your application's start.
 
