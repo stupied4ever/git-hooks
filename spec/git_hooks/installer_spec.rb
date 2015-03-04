@@ -63,12 +63,17 @@ describe GitHooks::Installer do
   describe '#installed?' do
     subject(:installed?) { installer.installed? }
 
+    let(:exists?) { true }
+
     before do
+      allow(File).to receive(:exist?).and_return(exists?)
       allow(File).to receive(:read)
         .and_return('GitHooks.execute_pre_commits')
     end
 
-    it { is_expected.to be_truthy }
+    it do
+      is_expected.to be_truthy
+    end
 
     it do
       expect(File).to receive(:exist?).with(hook_path)
@@ -80,6 +85,12 @@ describe GitHooks::Installer do
         allow(File).to receive(:read)
           .and_return('echo yolo')
       end
+
+      it { is_expected.to be_falsy }
+    end
+
+    context 'when the hook file does not exist' do
+      let(:exists?) { false }
 
       it { is_expected.to be_falsy }
     end
