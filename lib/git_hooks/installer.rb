@@ -1,33 +1,44 @@
 module GitHooks
   class Installer
-    attr_accessor :hook
-
     HOOK_SAMPLE_FILE = 'hook.sample'
 
-    def initialize(hook)
+    def initialize(hook, ruby_path = nil)
       @hook = hook
+      @ruby_path = ruby_path
     end
 
     def install(force = false)
-      return true if installed?
+      throw Exceptions::UnknownHookPresent.new(hook) if !force && installed?
 
-      FileUtils.symlink(
-        hook_template_path, File.join('.git', 'hooks', hook), force: force
-      )
-    rescue Errno::EEXIST
-      raise GitHooks::Exceptions::UnknowHookPresent, hook
+      hook_script = hook_template
+      hook_script.gsub!('/usr/bin/env ruby', ruby_path) if ruby_path
+
+      File
+        .open(hook_path, 'w')
+        .write(hook_script)
+
+      FileUtils.chmod(0775, hook_path)
     end
 
     def installed?
-      hook_file = File.join(Dir.pwd, '.git', 'hooks', hook)
-
-      File.symlink?(hook_file) && File.realpath(hook_file) == hook_template_path
+      File.exist?(hook_path) &&
+        File.read(hook_path).match(/GitHooks.execute_pre_commits/)
     end
 
     private
 
+    attr_accessor :hook, :ruby_path
+
+    def hook_template
+      File.read(hook_template_path)
+    end
+
     def hook_template_path
       File.join(GitHooks.base_path, HOOK_SAMPLE_FILE)
+    end
+
+    def hook_path
+      File.join('.git', 'hooks', hook)
     end
   end
 end

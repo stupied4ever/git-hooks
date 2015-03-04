@@ -1,8 +1,11 @@
 module GitHooks
   module Exceptions
-    class UnknowHookPresent < RuntimeError
+    class UnknownHookPresent < RuntimeError
       def initialize(hook)
-        super "There is a unknown #{hook} hook. If you are sure, use --force."
+        super <<-HEREDOC
+There is already a #{hook} hook installed.
+If you want to override it, use the --force option.
+HEREDOC
       end
     end
   end

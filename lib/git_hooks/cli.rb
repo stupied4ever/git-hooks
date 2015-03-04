@@ -6,13 +6,15 @@ module GitHooks
   class CLI < Thor
     desc 'install HOOK', 'Install some hook'
     option :force, type: :boolean
+    option :ruby_path, type: :string
     long_desc <<-LONGDESC
       Install some hook:
 
       $ git_hooks install pre-commit
     LONGDESC
     def install(hook)
-      GitHooks::Installer.new(hook).install(options[:force])
+      GitHooks::Installer.new(hook, options[:ruby_path])
+        .install(options[:force])
     end
 
     desc 'Init GitHooks on current folder', 'Create a configuration file'
