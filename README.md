@@ -63,7 +63,24 @@ application's start-up code (e.g. `config/environments/development.rb` or
 GitHooks.validate_hooks!
 ```
 
-This will force `git_hooks` installation before your application's start.
+This will force `git_hooks` installation before you can run your application. Be
+sure not to call `GitHooks#validate_hooks!` on production environments though!
+
+### Problems with ruby version
+
+If you run `git` under other systems such as `gitk` or Emacs' `Magit`, you may
+encounter problems with the ruby version being used to run `GitHooks`. This
+happens because those applications don't source the `~/.bashrc` file, which is
+required by ruby version managers such as `Rbenv` and `Rvm`.
+
+In order to fix this problem, you can install the hooks by passing your ruby
+path to the `--ruby_path` option. For example:
+
+```sh
+$ git_hooks install pre-commit --ruby_path `which ruby`
+```
+
+You can also manually edit the `.git/hooks/{hook-name}` file though.
 
 ## Contributing
 

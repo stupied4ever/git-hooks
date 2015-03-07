@@ -3,68 +3,55 @@ describe GitHooks::Installer do
 
   let(:hook) { 'pre-commit' }
 
-  let(:hook_real_path) do
+  let(:hook_template_path) do
     File.join(GitHooks.base_path, 'hook.sample')
   end
 
-  let(:absolute_path) do
-    File.join(GitHooks.base_path, '.git', 'hooks', hook)
+  let(:hook_path) do
+    File.join('.git', 'hooks', hook)
   end
 
   let(:git_hook_path) { ".git/hooks/#{hook}" }
+  let(:file) { instance_double(File, write: true) }
+
+  before do
+    allow(File).to receive(:open).and_return(file)
+    allow(FileUtils).to receive(:chmod).and_return(true)
+  end
 
   describe '#install' do
     subject(:install) { installer.install }
 
+    let(:installed?) { false }
+
     before do
-      allow(installer).to receive(:installed?).and_return(false)
-      allow(FileUtils).to receive(:symlink).and_return(true)
+      allow(installer).to receive(:installed?)
+        .and_return(installed?)
     end
 
-    it 'creates symlink' do
-      expect(FileUtils)
-        .to receive(:symlink)
-        .with(hook_real_path, git_hook_path, force: false)
+    it 'creates a new file' do
+      expect(File).to receive(:open)
+        .with(hook_path, 'w')
+
+      expect(file).to receive(:write)
+        .with(/GitHooks.execute_pre_commits/)
 
       install
     end
 
     it { is_expected.to be_truthy }
 
-    context 'when there is a unknown hook' do
-      before do
-        allow(FileUtils).to receive(:symlink).and_raise(Errno::EEXIST)
-      end
-
-      it 'raises an error' do
-        expect { install }.to raise_error(
-          GitHooks::Exceptions::UnknowHookPresent
-        )
-      end
-    end
-
     context 'when there is a unknown hook but I want to force installation' do
-      subject(:install) { installer.install true }
+      subject(:install) { installer.install(true) }
+
+      let(:installed?) { true }
 
       it 'creates symlink with force option' do
-        expect(FileUtils)
-          .to receive(:symlink)
-          .with(hook_real_path, git_hook_path, force: true)
+        expect(File).to receive(:open)
+          .with(hook_path, 'w')
 
-        install
-      end
-
-      it { is_expected.to be_truthy }
-    end
-
-    context 'when hook is already installed' do
-      before do
-        allow(installer).to receive(:installed?).and_return(true)
-      end
-
-      it 'does not create symlink' do
-        expect(FileUtils)
-          .to_not receive(:symlink)
+        expect(file).to receive(:write)
+          .with(/GitHooks.execute_pre_commits/)
 
         install
       end
@@ -76,30 +63,34 @@ describe GitHooks::Installer do
   describe '#installed?' do
     subject(:installed?) { installer.installed? }
 
-    let(:symlink?) { true }
+    let(:exists?) { true }
 
     before do
-      allow(File).to receive(:symlink?).and_return(symlink?)
-      allow(File).to receive(:realpath).and_return(hook_real_path)
+      allow(File).to receive(:exist?).and_return(exists?)
+      allow(File).to receive(:read)
+        .and_return('GitHooks.execute_pre_commits')
     end
 
-    it 'validates file is a symlink' do
-      expect(File).to receive(:symlink?).with(absolute_path)
+    it do
+      is_expected.to be_truthy
+    end
+
+    it do
+      expect(File).to receive(:exist?).with(hook_path)
       installed?
     end
 
-    it { is_expected.to be_truthy }
-
-    context 'when file is not a symlink' do
-      let(:symlink?) { false }
+    context 'when the hook does not validate pre_commits' do
+      before do
+        allow(File).to receive(:read)
+          .and_return('echo yolo')
+      end
 
       it { is_expected.to be_falsy }
     end
 
-    context 'when is not the GitHooks file' do
-      before do
-        allow(File).to receive(:realpath).and_return('/tmp/foo')
-      end
+    context 'when the hook file does not exist' do
+      let(:exists?) { false }
 
       it { is_expected.to be_falsy }
     end
