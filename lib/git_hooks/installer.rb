@@ -13,6 +13,7 @@ module GitHooks
       hook_script = hook_template
       hook_script.gsub!('/usr/bin/env ruby', ruby_path) if ruby_path
 
+      puts "Writing to file #{hook_path}"
       File
         .open(hook_path, 'w')
         .write(hook_script)
