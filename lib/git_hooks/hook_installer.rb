@@ -13,7 +13,6 @@ module GitHooks
       throw Exceptions::UnknownHookPresent.new(hook) if !force && installed?
 
       hook_script = ERB.new(hook_template).result(binding)
-      hook_script.gsub!('/usr/bin/env ruby', ruby_path) if ruby_path
 
       puts "Writing to file #{hook_path}"
       File
