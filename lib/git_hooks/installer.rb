@@ -1,8 +1,10 @@
+require 'logger'
+
 module GitHooks
   class Installer
     HOOK_SAMPLE_FILE = 'hook.sample'
 
-    def initialize(hook, ruby_path: nil, logger: nil)
+    def initialize(hook, ruby_path: nil, logger: Logger.new('/dev/null'))
       @hook = hook
       @ruby_path = ruby_path
       @logger = logger
@@ -14,7 +16,7 @@ module GitHooks
       hook_script = hook_template
       hook_script.gsub!('/usr/bin/env ruby', ruby_path) if ruby_path
 
-      logger.info "Writing to file #{hook_path}" if logger
+      logger.info "Writing to file #{hook_path}"
       File
         .open(hook_path, 'w')
         .write(hook_script)
