@@ -1,6 +1,8 @@
+require 'erb'
+
 module GitHooks
   class HookInstaller
-    HOOK_SAMPLE_FILE = 'hook.sample'
+    HOOK_SAMPLE_FILE = 'hook.sample.erb'
 
     def initialize(hook, ruby_path)
       @hook = hook
@@ -10,7 +12,7 @@ module GitHooks
     def install(force = false)
       throw Exceptions::UnknownHookPresent.new(hook) if !force && installed?
 
-      hook_script = hook_template
+      hook_script = ERB.new(hook_template).result(binding)
       hook_script.gsub!('/usr/bin/env ruby', ruby_path) if ruby_path
 
       puts "Writing to file #{hook_path}"
@@ -29,8 +31,12 @@ module GitHooks
 
     attr_accessor :hook, :ruby_path
 
+    def run_hook_command
+      "GitHooks.execute_#{@hook.gsub('-', '_')}s"
+    end
+
     def hook_file_contains_hook_command?
-      expected = /GitHooks.execute_#{Regexp.escape(@hook.gsub('-', '_'))}s/
+      expected = /#{Regexp.escape(run_hook_command)}/
       File.read(hook_path).match(expected)
     end
 
