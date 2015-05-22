@@ -19,7 +19,7 @@ module GitHooks
 
     desc 'Init GitHooks on current folder', 'Create a configuration file'
     long_desc <<-LONGDESC
-      Create a configuration file base on git_hooks.yml.examle
+      Create a configuration file based on git_hooks.yml.example
 
       $ git_hooks init
     LONGDESC
