@@ -2,9 +2,10 @@ module GitHooks
   class Installer
     HOOK_SAMPLE_FILE = 'hook.sample'
 
-    def initialize(hook, ruby_path = nil)
+    def initialize(hook, ruby_path: nil, logger: nil)
       @hook = hook
       @ruby_path = ruby_path
+      @logger = logger
     end
 
     def install(force = false)
@@ -13,7 +14,7 @@ module GitHooks
       hook_script = hook_template
       hook_script.gsub!('/usr/bin/env ruby', ruby_path) if ruby_path
 
-      puts "Writing to file #{hook_path}"
+      logger.info "Writing to file #{hook_path}" if logger
       File
         .open(hook_path, 'w')
         .write(hook_script)
@@ -28,7 +29,7 @@ module GitHooks
 
     private
 
-    attr_accessor :hook, :ruby_path
+    attr_accessor :hook, :ruby_path, :logger
 
     def hook_template
       File.read(hook_template_path)
