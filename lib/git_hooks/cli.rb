@@ -1,4 +1,5 @@
 require 'thor'
+require 'logger'
 
 require_relative '../git-hooks'
 
@@ -13,8 +14,12 @@ module GitHooks
       $ git_hooks install pre-commit
     LONGDESC
     def install(hook)
-      GitHooks::Installer.new(hook, options[:ruby_path])
-        .install(options[:force])
+      installer = GitHooks::Installer.new(
+        hook,
+        ruby_path: options[:ruby_path],
+        logger: logger
+      )
+      installer.install(options[:force])
     end
 
     desc 'Init GitHooks on current folder', 'Create a configuration file'
@@ -28,7 +33,7 @@ module GitHooks
         '../../../git_hooks.yml.example', __FILE__
       )
       destination_path = File.expand_path('.git_hooks.yml', Dir.pwd)
-      puts "Writing to file #{destination_path}"
+      logger.info "Writing to file #{destination_path}"
       FileUtils.cp(example_file, destination_path)
     end
 
@@ -37,6 +42,12 @@ module GitHooks
     desc 'version', 'Show git-hooks version'
     def version
       puts GitHooks::VERSION
+    end
+
+    private
+
+    def logger
+      @logger ||= Logger.new($stdout)
     end
   end
 end
