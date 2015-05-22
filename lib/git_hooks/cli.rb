@@ -28,6 +28,7 @@ module GitHooks
         '../../../git_hooks.yml.example', __FILE__
       )
       destination_path = File.expand_path('.git_hooks.yml', Dir.pwd)
+      puts "Writing to file #{destination_path}"
       FileUtils.cp(example_file, destination_path)
     end
 
