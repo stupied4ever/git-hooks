@@ -1,12 +1,14 @@
 require 'erb'
+require 'logger'
 
 module GitHooks
   class HookInstaller
     HOOK_SAMPLE_FILE = 'hook.sample.erb'
 
-    def initialize(hook, ruby_path)
+    def initialize(hook, ruby_path: nil, logger: nil)
       @hook = hook
       @ruby_path = ruby_path
+      @logger = logger || Logger.new('/dev/null')
     end
 
     def install(force = false)
@@ -14,7 +16,7 @@ module GitHooks
 
       hook_script = ERB.new(hook_template).result(binding)
 
-      puts "Writing to file #{hook_path}"
+      logger.info("Writing to file #{hook_path}")
       File
         .open(hook_path, 'w')
         .write(hook_script)
@@ -28,7 +30,7 @@ module GitHooks
 
     private
 
-    attr_accessor :hook, :ruby_path
+    attr_accessor :hook, :ruby_path, :logger
 
     def run_hook_command
       "GitHooks.execute_#{@hook.gsub('-', '_')}s"

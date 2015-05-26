@@ -2,9 +2,9 @@ require_relative 'hook_installer'
 
 module GitHooks
   class Installer
-    def initialize(*hooks, ruby_path: nil)
+    def initialize(*hooks, ruby_path: nil, logger: nil)
       @installers = hooks.map do |hook|
-        GitHooks::HookInstaller.new(hook, ruby_path)
+        GitHooks::HookInstaller.new(hook, ruby_path: ruby_path, logger: logger)
       end
     end
 
