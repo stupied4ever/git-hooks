@@ -1,6 +1,0 @@
-#!/usr/bin/env ruby
-require 'git-hooks'
-
-puts 'Running pre-commit hooks...'
-
-GitHooks.execute_pre_commits

@@ -17,7 +17,6 @@ require_relative 'git_hooks/exceptions'
 require_relative 'git_hooks/pre_commit'
 
 module GitHooks
-  HOOK_SAMPLE_FILE = 'hook.sample'
   HOOKS = [PRE_COMMIT = 'pre-commit']
 
   class << self
@@ -48,10 +47,6 @@ module GitHooks
     def valid_pre_commit_hook?
       configurations.pre_commits.empty? ||
         Installer.new(PRE_COMMIT).installed?
-    end
-
-    def real_hook_template_path
-      File.join(base_path, HOOK_SAMPLE_FILE)
     end
   end
 end

@@ -12,10 +12,15 @@ module GitHooks
       Install some hook:
 
       $ git_hooks install pre-commit
+
+      Intall all hooks:
+
+      $ git_hooks install
     LONGDESC
-    def install(hook)
+    def install(*hooks)
+      hooks = GitHooks::HOOKS if hooks.empty?
       installer = GitHooks::Installer.new(
-        hook,
+        *hooks,
         ruby_path: options[:ruby_path],
         logger: logger
       )

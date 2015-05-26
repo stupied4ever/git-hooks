@@ -1,0 +1,6 @@
+#!<%= ruby_path || '/usr/bin/env ruby' %>
+require 'git-hooks'
+
+puts 'Running <%= hook %> hooks...'
+
+<%= run_hook_command %>
